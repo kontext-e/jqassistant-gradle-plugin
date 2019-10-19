@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Arrays.asList;
+
 public class JqassistantSpec implements Serializable {
     private List<String> args = new ArrayList<>();
 
@@ -13,6 +15,11 @@ public class JqassistantSpec implements Serializable {
 
     public JqassistantSpec addArgs(List<String> args) {
         this.args.addAll(args);
+        return this;
+    }
+
+    public JqassistantSpec addArgs(String... args) {
+        this.args.addAll(asList(args));
         return this;
     }
 }

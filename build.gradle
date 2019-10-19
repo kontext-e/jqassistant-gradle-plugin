@@ -28,7 +28,7 @@ dependencies {
     compileOnly "com.buschmais.jqassistant.cli:jqassistant-commandline-neo4jv3:1.7.0"
 
     testImplementation gradleTestKit()
-    testImplementation 'junit:junit:4.12'
+    testImplementation('org.junit.jupiter:junit-jupiter:5.5.2')
 }
 
 project.ext["jqaversion"] = "1.7.0"
@@ -42,7 +42,7 @@ jqassistant {
                "de.kontext-e.jqassistant.plugin:jqassistant.plugin.git:1.7.0"
     ]
 
-    args "-reset"
+    options "-reset"
 
-//    scanDirs ".git"
+    scanDirs ".git"
 }

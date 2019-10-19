@@ -47,11 +47,15 @@ public class Jqassistant extends DefaultTask {
     }
 
     private JqassistantSpec createSpec() {
-        System.out.println("Args: "+extension.getArgs());
-        return new JqassistantSpec()
+        final JqassistantSpec jqassistantSpec = new JqassistantSpec()
                 .addArgs(args)
-                .addArgs(extension.getArgs())
-                ;
+                .addArgs(extension.getOptions());
+
+        if (!extension.getScanDirs().isEmpty()) {
+            jqassistantSpec.addArgs("-f");
+            jqassistantSpec.addArgs(extension.getScanDirs());
+        }
+        return jqassistantSpec;
     }
 
     public void addArg(String arg) {

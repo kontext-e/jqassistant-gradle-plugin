@@ -36,40 +36,35 @@ public class JqassistantGradlePlugin implements Plugin<Project> {
         registerTask(project, config, jqassistantPluginExtension, "available-scopes");
         registerTask(project, config, jqassistantPluginExtension, "available-rules");
         registerTask(project, config, jqassistantPluginExtension, "effective-rules");
-
-
-        final Jqassistant scan = project.getTasks().create("scan", Jqassistant.class, jqassistant -> {
-            jqassistant.setDataFiles(config);
-            jqassistant.addArg("scan");
-            jqassistant.setExtension(jqassistantPluginExtension);
-
-            final JavaPluginConvention javaPluginConvention = project.getConvention().getPlugin(JavaPluginConvention.class);
-            if(javaPluginConvention != null && !javaPluginConvention.getSourceSets().isEmpty()) {
-                jqassistant.addArg("-f");
-
-                for (SourceSet sourceSet : javaPluginConvention.getSourceSets()) {
-                    FileCollection presentClassDirs = sourceSet.getOutput().getClassesDirs().filter(File::exists);
-                    final String asPath = presentClassDirs.getAsPath();
-                    if(asPath != null && !asPath.isEmpty()) {
-                        jqassistant.addArg("java:classpath::" + asPath);
-                    }
-                    // FIXME subprojects
-                }
-            }
-        });
-        scan.setDescription("Executes jQAssistant task 'scan'.");
+        final Jqassistant scanTask = registerTask(project, config, jqassistantPluginExtension, "scan");
+        addJavaOutputToScan(project, scanTask);
 
         // this is for dynamically defined task of this type in build.gradle
         project.getTasks().withType(Jqassistant.class).configureEach(jqassistant -> jqassistant.setDataFiles(config));
     }
 
-    private void registerTask(Project project, Configuration config, JqassistantPluginExtension jqassistantPluginExtension, String name) {
-        final Jqassistant read = project.getTasks().create(name, Jqassistant.class, jqassistant -> {
+    private void addJavaOutputToScan(Project project, Jqassistant scanTask) {
+        final JavaPluginConvention javaPluginConvention = project.getConvention().getPlugin(JavaPluginConvention.class);
+        if(javaPluginConvention != null && !javaPluginConvention.getSourceSets().isEmpty()) {
+            for (SourceSet sourceSet : javaPluginConvention.getSourceSets()) {
+                FileCollection presentClassDirs = sourceSet.getOutput().getClassesDirs().filter(File::exists);
+                final String asPath = presentClassDirs.getAsPath();
+                if(asPath != null && !asPath.isEmpty()) {
+                    scanTask.getExtension().scanDirs("java:classpath::" + asPath);
+                }
+                // FIXME subprojects
+            }
+        }
+    }
+
+    private Jqassistant registerTask(Project project, Configuration config, JqassistantPluginExtension jqassistantPluginExtension, String name) {
+        final Jqassistant jqa = project.getTasks().create(name, Jqassistant.class, jqassistant -> {
             jqassistant.setDataFiles(config);
             jqassistant.addArg(name);
             jqassistant.setExtension(jqassistantPluginExtension);
         });
-        read.setDescription(format("Executes jQAssistant task '%s'.",name));
+        jqa.setDescription(format("Executes jQAssistant task '%s'.",name));
+        return jqa;
     }
 
 }

@@ -2,15 +2,13 @@ package de.kontext_e.jqassistant.gradle;
 
 import org.gradle.api.tasks.options.Option;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class JqassistantPluginExtension {
     private String toolVersion = "1.7.0";
     private Collection<String> plugins;
-    private List<String> args = new ArrayList<>();
+    private List<String> options = new ArrayList<>();
+    private List<String> scanDirs = new ArrayList<>();
 
     public String getToolVersion() {
         return toolVersion;
@@ -28,31 +26,39 @@ public class JqassistantPluginExtension {
         this.plugins = plugins;
     }
 
-    public List<String> getArgs() {
-        return args;
+    public List<String> getOptions() {
+        return Collections.unmodifiableList(options);
+    }
+
+    public List<String> getScanDirs() {
+        return Collections.unmodifiableList(scanDirs);
     }
 
     @Option(option = "args", description = "Command line arguments passed to the main class.")
     public JqassistantPluginExtension setArgsString(String args) {
-        return setArgs(Arrays.asList(args.split(" ")));
+        return setOptions(Arrays.asList(args.split(" ")));
     }
 
-    public JqassistantPluginExtension setArgs(List<String> applicationArgs) {
-        this.args = applicationArgs;
+    public JqassistantPluginExtension setOptions(List<String> applicationArgs) {
+        this.options = applicationArgs;
         return this;
     }
 
     public JqassistantPluginExtension scanDirs(Object... args) {
+        fillInto(args, scanDirs);
         return this;
     }
 
-    public JqassistantPluginExtension args(Object... args) {
+    public JqassistantPluginExtension options(Object... args) {
+        fillInto(args, options);
+        return this;
+    }
+
+    private void fillInto(Object[] args, List<String> target) {
         for (Object arg : args) {
             if(arg instanceof String) {
-                this.args.add((String) arg);
+                target.add((String) arg);
             }
         }
-
-        return this;
     }
 }
