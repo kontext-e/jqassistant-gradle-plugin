@@ -46,7 +46,7 @@ public class JqassistantExecutor implements JqassistantWorker {
             };
             try {
                 Main main = new Main(taskFactory);
-                main.run(spec.getArgs());
+                main.run(spec.getArgs().toArray(new String[0]));
             } catch (Exception e) {
                 e.printStackTrace();
             }

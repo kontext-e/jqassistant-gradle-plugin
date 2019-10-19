@@ -16,7 +16,7 @@ public class JqassistantWorkerManager {
             JqassistantWorker worker = createWorkerProcess(workingDir, workerFactory, classpath, spec);
             return worker.run(spec);
         } catch (WorkerProcessException e) {
-            e.printStackTrace();
+            // todo log info
             return new JqassistantResult();
         }
     }

@@ -1,16 +1,18 @@
 package de.kontext_e.jqassistant.gradle;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JqassistantSpec implements Serializable {
-    private String[] args;
+    private List<String> args = new ArrayList<>();
 
-    public String[] getArgs() {
+    public List<String> getArgs() {
         return args;
     }
 
-    public JqassistantSpec withArgs(String[] args) {
-        this.args = args;
+    public JqassistantSpec addArgs(List<String> args) {
+        this.args.addAll(args);
         return this;
     }
 }

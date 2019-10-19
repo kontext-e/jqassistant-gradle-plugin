@@ -1,21 +1,21 @@
-group 'de.kontext_e.jqassistant.gradle'
-version '1.0.0-SNAPSHOT'
 
 buildscript {
     repositories {
         mavenLocal()
     }
 
-/*
+
     dependencies {
         classpath 'de.kontext_e.jqassistant.gradle:jqassistant-gradle-plugin:1.0.0-SNAPSHOT'
     }
-*/
 }
 
 apply plugin: 'java'
 apply plugin: 'maven'
-//apply plugin: 'de.kontext_e.jqassistant.gradle'
+apply plugin: 'de.kontext_e.jqassistant.gradle'
+
+group 'de.kontext_e.jqassistant.gradle'
+version '1.0.0-SNAPSHOT'
 
 repositories {
     jcenter()
@@ -34,7 +34,6 @@ dependencies {
 project.ext["jqaversion"] = "1.7.0"
 project.ext["kejqapluginversion"] = "1.7.0"
 
-/*
 jqassistant {
     toolVersion = "1.7.0"
 
@@ -43,6 +42,7 @@ jqassistant {
                "de.kontext-e.jqassistant.plugin:jqassistant.plugin.git:1.7.0"
     ]
 
-    // scanDirs = [".git"]
+    args "-reset"
+
+//    scanDirs ".git"
 }
-*/

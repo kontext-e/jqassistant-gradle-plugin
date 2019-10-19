@@ -14,8 +14,8 @@ import java.util.List;
 
 public class Jqassistant extends DefaultTask {
     private final ConfigurableFileCollection dataFiles;
-    private String jqaTask;
     private List<String> args = new ArrayList<>();
+    private JqassistantPluginExtension extension;
 
     public Jqassistant() {
         dataFiles = getProject().files();
@@ -47,11 +47,22 @@ public class Jqassistant extends DefaultTask {
     }
 
     private JqassistantSpec createSpec() {
+        System.out.println("Args: "+extension.getArgs());
         return new JqassistantSpec()
-                .withArgs(args.toArray(new String[0]));
+                .addArgs(args)
+                .addArgs(extension.getArgs())
+                ;
     }
 
     public void addArg(String arg) {
         args.add(arg);
+    }
+
+    public void setExtension(JqassistantPluginExtension extension) {
+        this.extension = extension;
+    }
+
+    public JqassistantPluginExtension getExtension() {
+        return extension;
     }
 }
