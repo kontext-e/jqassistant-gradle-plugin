@@ -10,6 +10,11 @@ buildscript {
     }
 }
 
+plugins {
+    id 'java-gradle-plugin'
+    id 'com.gradle.plugin-publish' version '0.10.0'
+}
+
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'de.kontext_e.jqassistant.gradle'
@@ -30,6 +35,27 @@ dependencies {
     testImplementation gradleTestKit()
     testImplementation('org.junit.jupiter:junit-jupiter:5.5.2')
 }
+
+pluginBundle {
+    website = 'https://github.com/kontext-e/jqassistant-gradle-plugin'
+    vcsUrl = 'https://github.com/kontext-e/jqassistant-gradle-plugin'
+    tags = ['jqassistant','code quality','architecture']
+}
+
+
+
+gradlePlugin {
+    plugins {
+        greetingsPlugin {
+            id = 'de.kontext_e.jqassistant.gradle'
+            displayName = 'jQAssistant Gradle plugin'
+            description = 'Scans project artifacts, enriches with higher level concepts and applies constraints. See https://jqassistant.org/ for details.'
+            implementationClass = 'de.kontext_e.jqassistant.gradle.JqassistantGradlePlugin'
+        }
+    }
+}
+
+
 
 project.ext["jqaversion"] = "1.7.0"
 project.ext["kejqapluginversion"] = "1.7.0"
