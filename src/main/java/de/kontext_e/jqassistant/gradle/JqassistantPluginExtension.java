@@ -1,12 +1,13 @@
 package de.kontext_e.jqassistant.gradle;
 
+import groovy.lang.GString;
 import org.gradle.api.tasks.options.Option;
 
 import java.util.*;
 
 public class JqassistantPluginExtension {
     private String toolVersion = "1.7.0";
-    private Collection<String> plugins;
+    private List<String> plugins = new ArrayList<>();
     private List<String> options = new ArrayList<>();
     private List<String> scanDirs = new ArrayList<>();
 
@@ -19,12 +20,9 @@ public class JqassistantPluginExtension {
     }
 
     public Collection<String> getPlugins() {
-        return plugins;
+        return Collections.unmodifiableList(plugins);
     }
 
-    public void setPlugins(Collection<String> plugins) {
-        this.plugins = plugins;
-    }
 
     public List<String> getOptions() {
         return Collections.unmodifiableList(options);
@@ -44,6 +42,11 @@ public class JqassistantPluginExtension {
         return this;
     }
 
+    public JqassistantPluginExtension plugins(Object... args) {
+        fillInto(args, plugins);
+        return this;
+    }
+
     public JqassistantPluginExtension scanDirs(Object... args) {
         fillInto(args, scanDirs);
         return this;
@@ -58,6 +61,10 @@ public class JqassistantPluginExtension {
         for (Object arg : args) {
             if(arg instanceof String) {
                 target.add((String) arg);
+            } else if(arg instanceof GString) {
+                target.add(arg.toString());
+            } else {
+                System.out.println("Unknown type: "+arg.getClass().getName());
             }
         }
     }
