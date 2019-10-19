@@ -1,0 +1,48 @@
+group 'de.kontext_e.jqassistant.gradle'
+version '1.0.0-SNAPSHOT'
+
+buildscript {
+    repositories {
+        mavenLocal()
+    }
+
+/*
+    dependencies {
+        classpath 'de.kontext_e.jqassistant.gradle:jqassistant-gradle-plugin:1.0.0-SNAPSHOT'
+    }
+*/
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+//apply plugin: 'de.kontext_e.jqassistant.gradle'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+
+    compileOnly "com.buschmais.jqassistant.cli:jqassistant-commandline-neo4jv3:1.7.0"
+
+    testImplementation gradleTestKit()
+    testImplementation 'junit:junit:4.12'
+}
+
+project.ext["jqaversion"] = "1.7.0"
+project.ext["kejqapluginversion"] = "1.7.0"
+
+/*
+jqassistant {
+    toolVersion = "1.7.0"
+
+    plugins = ["com.buschmais.jqassistant.plugin:java:1.7.0",
+               "com.buschmais.jqassistant.plugin:junit:1.7.0",
+               "de.kontext-e.jqassistant.plugin:jqassistant.plugin.git:1.7.0"
+    ]
+
+    // scanDirs = [".git"]
+}
+*/
