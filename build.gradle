@@ -42,7 +42,7 @@ pluginBundle {
 
 gradlePlugin {
     plugins {
-        greetingsPlugin {
+        jqassistantPlugin {
             id = 'de.kontext_e.jqassistant.gradle'
             displayName = 'jQAssistant Gradle plugin'
             description = 'Scans project artifacts, enriches with higher level concepts and applies constraints. See https://jqassistant.org/ for details.'
