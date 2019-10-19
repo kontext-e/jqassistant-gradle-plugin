@@ -1,0 +1,52 @@
+= jQAssistant Gradle plugin
+
+This is the first snapshot of a Gradle plugin for jQAssistant. Currently supported are:
+
+* all jQAssistant tasks: scan, analyze, server, report, available-scopes, available-rules, effective-rules
+* giving any options defined for the CLI
+* configuring the jQAssistant version (default is 1.7.0)
+* configuring additional plugins (Java plugin is added by default)
+* configuring additional artifacts to be scanned (Java compile output is added by default)
+* single module projects only
+
+== Usage
+
+The plugin was published to Gradle plugin store, but is currently under review.
+Until then, you have to clone the repository from GitHub and install it via
+
+    ./gradlew install
+
+Then add in your Gradle project in question the plugin via
+
+    buildscript {
+        repositories {
+            mavenLocal()
+        }
+        dependencies {
+            classpath 'de.kontext_e.jqassistant.gradle:jqassistant-gradle-plugin:1.0.0-SNAPSHOT'
+        }
+    }
+
+and apply the plugin
+
+    apply plugin: 'de.kontext_e.jqassistant.gradle'
+
+
+== Configuration
+
+You can go with the defaults or configure the plugin, e.g. this way:
+
+    project.ext["jqaversion"] = "1.7.0"
+    project.ext["kejqapluginversion"] = "1.7.0"
+    jqassistant {
+        toolVersion = "${project.jqaversion}"
+        plugins "com.buschmais.jqassistant.plugin:junit:${project.jqaversion}"
+        plugins "de.kontext-e.jqassistant.plugin:jqassistant.plugin.git:${project.kejqapluginversion}"
+        options "-reset"
+        scanDirs ".git"
+    }
+
+Note that if you have multiple options or scanDirs, just add multiple lines as seen with plugins, e.g.
+
+        scanDirs ".git"
+        scanDirs "doc/arc42"

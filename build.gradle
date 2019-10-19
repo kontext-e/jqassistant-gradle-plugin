@@ -3,8 +3,6 @@ buildscript {
     repositories {
         mavenLocal()
     }
-
-
     dependencies {
         classpath 'de.kontext_e.jqassistant.gradle:jqassistant-gradle-plugin:1.0.0-SNAPSHOT'
     }
@@ -42,8 +40,6 @@ pluginBundle {
     tags = ['jqassistant','code quality','architecture']
 }
 
-
-
 gradlePlugin {
     plugins {
         greetingsPlugin {
@@ -54,7 +50,6 @@ gradlePlugin {
         }
     }
 }
-
 
 
 project.ext["jqaversion"] = "1.7.0"
