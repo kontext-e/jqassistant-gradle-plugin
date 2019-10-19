@@ -35,9 +35,8 @@ project.ext["jqaversion"] = "1.7.0"
 project.ext["kejqapluginversion"] = "1.7.0"
 
 jqassistant {
-    toolVersion = "1.7.0"
+    toolVersion = "${project.jqaversion}"
 
-    plugins "com.buschmais.jqassistant.plugin:java:${project.jqaversion}"
     plugins "com.buschmais.jqassistant.plugin:junit:${project.jqaversion}"
     plugins "de.kontext-e.jqassistant.plugin:jqassistant.plugin.git:${project.kejqapluginversion}"
 
