@@ -20,22 +20,22 @@ import java.util.List;
 public class Jqassistant extends DefaultTask {
     private static final Logger LOGGER = Logging.getLogger(Jqassistant.class);
 
-    private final ConfigurableFileCollection dataFiles;
+    private final ConfigurableFileCollection classpath;
     private List<String> args = new ArrayList<>();
     private JqassistantPluginExtension extension;
     private Project projectToScan;
 
     public Jqassistant() {
-        dataFiles = getProject().files();
+        classpath = getProject().files();
     }
 
     @InputFiles
-    public FileCollection getDataFiles() {
-        return dataFiles;
+    public FileCollection getClasspath() {
+        return classpath;
     }
 
-    public void setDataFiles(FileCollection dataFiles) {
-        this.dataFiles.setFrom(dataFiles);
+    public void setClasspath(FileCollection classpath) {
+        this.classpath.setFrom(classpath);
     }
 
     @Inject
@@ -48,7 +48,7 @@ public class Jqassistant extends DefaultTask {
         addDefaultScanDirs();
 
         JqassistantWorkerManager manager = new JqassistantWorkerManager();
-        manager.runWorker(getProject().getProjectDir(), getWorkerProcessBuilderFactory(), getDataFiles(), createSpec());
+        manager.runWorker(getProject().getProjectDir(), getWorkerProcessBuilderFactory(), getClasspath(), createSpec());
     }
 
     private void addDefaultScanDirs() {

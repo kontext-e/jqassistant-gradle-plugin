@@ -51,3 +51,22 @@ Note that if you have multiple options or scanDirs, just add multiple lines as s
 
         scanDirs ".git"
         scanDirs "doc/arc42"
+
+== Tested Gradle Versions
+
+* 5.6.3: works
+* 5.5.1: works
+* 5.4.1: works
+* 5.3.1: works
+* 5.2.1: works
+* 5.1.1: works
+* 5.0: works
+* 4.10: works
+* 4.9 and below: does not work
+
+== Tested jQAssistant Versions
+
+* 1.7.0: works
+* 1.6.0: Gradle Plugin works, but jQAssistant Java Plugin did not
+* 1.5.0: Gradle Plugin works, but jQAssistant Java Plugin did not
+* 1.4.0 and below: Gradle Plugin did not work
