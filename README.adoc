@@ -32,6 +32,13 @@ and apply the plugin
 
     apply plugin: 'de.kontext_e.jqassistant.gradle'
 
+Now you can simply call
+
+    ./gradlew scan
+
+or
+
+    ./gradlew analyze
 
 == Configuration
 
