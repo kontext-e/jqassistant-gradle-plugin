@@ -1,21 +1,29 @@
 package de.kontext_e.jqassistant.gradle;
 
 import org.gradle.api.DefaultTask;
+import org.gradle.api.Project;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.FileCollection;
+import org.gradle.api.logging.Logger;
+import org.gradle.api.logging.Logging;
+import org.gradle.api.plugins.JavaPluginConvention;
 import org.gradle.api.tasks.InputFiles;
+import org.gradle.api.tasks.SourceSet;
 import org.gradle.api.tasks.TaskAction;
-import org.gradle.internal.reflect.Instantiator;
 import org.gradle.process.internal.worker.WorkerProcessFactory;
 
 import javax.inject.Inject;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Jqassistant extends DefaultTask {
+    private static final Logger LOGGER = Logging.getLogger(Jqassistant.class);
+
     private final ConfigurableFileCollection dataFiles;
     private List<String> args = new ArrayList<>();
     private JqassistantPluginExtension extension;
+    private Project projectToScan;
 
     public Jqassistant() {
         dataFiles = getProject().files();
@@ -31,19 +39,42 @@ public class Jqassistant extends DefaultTask {
     }
 
     @Inject
-    public Instantiator getInstantiator() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Inject
     public WorkerProcessFactory getWorkerProcessBuilderFactory() {
         throw new UnsupportedOperationException();
     }
 
     @TaskAction
     public void process() {
+        addDefaultScanDirs();
+
         JqassistantWorkerManager manager = new JqassistantWorkerManager();
-        JqassistantResult result = manager.runWorker(getProject().getProjectDir(), getWorkerProcessBuilderFactory(), getDataFiles(), createSpec());
+        manager.runWorker(getProject().getProjectDir(), getWorkerProcessBuilderFactory(), getDataFiles(), createSpec());
+    }
+
+    private void addDefaultScanDirs() {
+        if(projectToScan != null) {
+            addConventionScanDirs(projectToScan);
+
+            for (Project subproject : projectToScan.getSubprojects()) {
+                addConventionScanDirs(subproject);
+            }
+        }
+    }
+
+    private void addConventionScanDirs(Project rootProject) {
+        try {
+            final JavaPluginConvention javaPluginConvention = rootProject.getConvention().getPlugin(JavaPluginConvention.class);
+            if (javaPluginConvention != null && !javaPluginConvention.getSourceSets().isEmpty()) {
+                for (SourceSet sourceSet : javaPluginConvention.getSourceSets()) {
+                    FileCollection presentClassDirs = sourceSet.getOutput().getClassesDirs().filter(File::exists);
+                    for (File asPath : presentClassDirs.getFiles()) {
+                        extension.scanDirs("java:classpath::" + asPath.getAbsolutePath());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error while adding scan directories from convention: "+e, e);
+        }
     }
 
     private JqassistantSpec createSpec() {
@@ -58,15 +89,15 @@ public class Jqassistant extends DefaultTask {
         return jqassistantSpec;
     }
 
-    public void addArg(String arg) {
+    void addArg(String arg) {
         args.add(arg);
     }
 
-    public void setExtension(JqassistantPluginExtension extension) {
+    void setExtension(JqassistantPluginExtension extension) {
         this.extension = extension;
     }
 
-    public JqassistantPluginExtension getExtension() {
-        return extension;
+    void projectToScan(Project rootProject) {
+        this.projectToScan = rootProject;
     }
 }

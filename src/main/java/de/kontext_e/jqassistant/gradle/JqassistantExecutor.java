@@ -8,10 +8,14 @@ import com.buschmais.jqassistant.commandline.task.ServerTask;
 import com.buschmais.jqassistant.core.store.api.Store;
 import com.buschmais.jqassistant.core.store.impl.EmbeddedGraphStore;
 import com.buschmais.jqassistant.neo4j.backend.bootstrap.EmbeddedNeo4jServer;
+import org.gradle.api.logging.Logger;
+import org.gradle.api.logging.Logging;
 
 import java.util.concurrent.CountDownLatch;
 
 public class JqassistantExecutor implements JqassistantWorker {
+    private static final Logger LOGGER = Logging.getLogger(JqassistantExecutor.class);
+
     public static final CountDownLatch LATCH = new CountDownLatch(1);
 
     @Override
@@ -35,7 +39,7 @@ public class JqassistantExecutor implements JqassistantWorker {
                                     LATCH.await();
                                     System.out.println("Stopping server....");
                                 } catch (InterruptedException e) {
-                                    e.printStackTrace();
+                                    Thread.currentThread().interrupt();
                                 }
                                 server.stop();
                             }
@@ -48,7 +52,7 @@ public class JqassistantExecutor implements JqassistantWorker {
                 Main main = new Main(taskFactory);
                 main.run(spec.getArgs().toArray(new String[0]));
             } catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.error("Error while executing jQAssistant: " + e, e);
             }
 
             return new JqassistantResult();

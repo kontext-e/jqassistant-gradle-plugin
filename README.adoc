@@ -7,16 +7,17 @@ This is the first snapshot of a Gradle plugin for jQAssistant. Currently support
 * configuring the jQAssistant version (default is 1.7.0)
 * configuring additional plugins (Java plugin is added by default)
 * configuring additional artifacts to be scanned (Java compile output is added by default)
-* single module projects only
+* single module and multi module projects
 
 == Usage
 
-The plugin was published to Gradle plugin store, but is currently under review.
-Until then, you have to clone the repository from GitHub and install it via
+Add in your Gradle project in question the plugin via
 
-    ./gradlew install
+    plugins {
+        id "de.kontext_e.jqassistant.gradle" version "1.0.0-SNAPSHOT"
+    }
 
-Then add in your Gradle project in question the plugin via
+or
 
     buildscript {
         repositories {
