@@ -57,7 +57,7 @@ public class JqassistantGradlePlugin implements Plugin<Project> {
         }
 
         if(toolVersion.startsWith("1.3")) {
-            // in 1.2 it was another different name
+            // in 1.3 it was another different name
             artifact = "com.buschmais.jqassistant:jqassistant-commandline:";
         }
 

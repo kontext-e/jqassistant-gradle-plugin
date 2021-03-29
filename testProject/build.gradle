@@ -1,0 +1,33 @@
+buildscript {
+    repositories {
+        mavenLocal()
+    }
+
+    dependencies {
+        classpath 'de.kontext_e.jqassistant.gradle:jqassistant-gradle-plugin:1.0.1-SNAPSHOT'
+    }
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+apply plugin: 'de.kontext_e.jqassistant.gradle'
+
+group 'de.kontext_e.jqassistant.gradle.testproject'
+version '1.0.0-SNAPSHOT'
+
+project.ext["jqaversion"] = "1.9.1"
+project.ext["kejqapluginversion"] = "1.7.0"
+
+jqassistant {
+    toolVersion = "${project.jqaversion}"
+
+    plugins "com.buschmais.jqassistant.plugin:java:${project.jqaversion}"
+    plugins "de.kontext-e.jqassistant.plugin:jqassistant.plugin.git:${project.kejqapluginversion}"
+
+    options "-reset"
+
+    scanDirs "../.git"
+}

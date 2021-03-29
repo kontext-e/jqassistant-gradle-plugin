@@ -6,7 +6,7 @@ import org.gradle.api.tasks.options.Option;
 import java.util.*;
 
 public class JqassistantPluginExtension {
-    private String toolVersion = "1.7.0";
+    private String toolVersion = "1.9.1";
     private List<String> plugins = new ArrayList<>();
     private List<String> options = new ArrayList<>();
     private List<String> scanDirs = new ArrayList<>();

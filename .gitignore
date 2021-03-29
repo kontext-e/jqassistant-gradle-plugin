@@ -1,8 +1,7 @@
-/build
-/.gradle
+build
+.gradle
 /.idea
-/jqassistant/logs
-/jqassistant/store
-/jqassistant/store_lock
-/jqassistant/report
-
+/testProject/jqassistant/logs
+/testProject/jqassistant/store
+/testProject/jqassistant/store_lock
+/testProject/jqassistant/report
