@@ -1,0 +1,18 @@
+= jQAssistant Gradle Example Project
+
+Use this project for prototyping new functionality for the jQAssistant plugin.
+
+This project automatically reflects *every change* done in `src`.
+
+== Usage
+
+The following commands analyze the plugin itself:
+
+----
+$ cd example
+$ ../gradlew scan analyze server
+----
+
+You should be able to go to http://localhost:7474/ and observe that jQAssistant
+has applied the concept from the rules directory: the plugin class node now has
+additional labels named "Gradle" and "Plugin".

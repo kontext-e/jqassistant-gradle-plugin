@@ -1,7 +1,6 @@
 build
+out
 .gradle
 /.idea
-/testProject/jqassistant/logs
-/testProject/jqassistant/store
-/testProject/jqassistant/store_lock
-/testProject/jqassistant/report
+/example/jqassistant
+!/example/jqassistant/rules

@@ -20,4 +20,5 @@ jqassistant {
     options "-reset"
 
     scanDirs "../.git"
+    scanDirs "java:classpath::../build/classes/java/main"
 }
