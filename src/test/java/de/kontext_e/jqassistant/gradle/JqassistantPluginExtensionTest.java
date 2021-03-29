@@ -1,5 +1,8 @@
 package de.kontext_e.jqassistant.gradle;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.gradle.api.Project;
 import org.gradle.testfixtures.ProjectBuilder;
 import org.gradle.testkit.runner.BuildResult;
@@ -8,7 +11,7 @@ import org.gradle.testkit.runner.GradleRunner;
 import org.gradle.testkit.runner.TaskOutcome;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
+import org.junit.jupiter.api.io.TempDir;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,15 +36,12 @@ class JqassistantPluginExtensionTest {
     }
 
     @Test
-    void scanAndAnalyzeExecuted() {
-        File testProjectDir = new File("./testProject");
-        File expectedAnalyzeReportFile = new File("./testProject/jqassistant/report/jqassistant-report.xml");
-        if (expectedAnalyzeReportFile.exists()) {
-            assertTrue(expectedAnalyzeReportFile.delete(), "pre condition");
-        }
+    void scanAndAnalyzeExecuted(@TempDir final Path tempDir) throws Exception {
+        Path buildFile = Paths.get(getClass().getResource("build.gradle").toURI());
+        Files.copy(buildFile, tempDir.resolve(buildFile.getFileName()));
 
         BuildResult result = GradleRunner.create()
-          .withProjectDir(testProjectDir)
+          .withProjectDir(tempDir.toFile())
           .withPluginClasspath()
           .withArguments("scan", "analyze")
           .build();
@@ -53,6 +53,7 @@ class JqassistantPluginExtensionTest {
         BuildTask analyzeTask = result.task(":analyze");
         assertNotNull(analyzeTask);
         assertEquals(TaskOutcome.SUCCESS, analyzeTask.getOutcome());
-        assertTrue(expectedAnalyzeReportFile.exists());
+        Path expectedAnalyzeReportFile = tempDir.resolve("jqassistant/report/jqassistant-report.xml");
+        assertTrue(Files.exists(expectedAnalyzeReportFile));
     }
 }
