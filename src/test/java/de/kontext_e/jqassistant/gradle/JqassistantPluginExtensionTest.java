@@ -41,7 +41,6 @@ class JqassistantPluginExtensionTest {
         }
 
         BuildResult result = GradleRunner.create()
-          .withDebug(true)
           .withProjectDir(testProjectDir)
           .withArguments("scan", "analyze")
           .build();
