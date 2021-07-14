@@ -1,5 +1,6 @@
 package de.kontext_e.jqassistant.gradle;
 
-public interface JqassistantWorker {
-    JqassistantResult run(JqassistantSpec spec);
+import org.gradle.process.internal.worker.RequestHandler;
+
+public interface JqassistantWorker extends RequestHandler<JqassistantSpec, JqassistantResult> {
 }

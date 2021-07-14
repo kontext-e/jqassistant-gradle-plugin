@@ -1,0 +1,23 @@
+plugins {
+    id('de.kontext_e.jqassistant.gradle')
+    id('java')
+}
+
+ext {
+    jqaversion = "1.9.1"
+    kejqapluginversion = "1.7.0"
+}
+
+repositories {
+    mavenCentral()
+}
+
+jqassistant {
+    toolVersion jqaversion
+    plugins "com.buschmais.jqassistant.plugin:java:$jqaversion"
+    plugins "de.kontext-e.jqassistant.plugin:jqassistant.plugin.git:$kejqapluginversion"
+
+    options "-reset"
+
+    scanDirs "."
+}

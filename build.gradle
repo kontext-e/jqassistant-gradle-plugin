@@ -1,24 +1,11 @@
-
-buildscript {
-    repositories {
-        mavenLocal()
-    }
-    dependencies {
-        classpath 'de.kontext_e.jqassistant.gradle:jqassistant-gradle-plugin:1.0.0-SNAPSHOT'
-    }
-}
-
 plugins {
     id 'java-gradle-plugin'
-    id 'com.gradle.plugin-publish' version '0.10.0'
+    id 'com.gradle.plugin-publish' version '0.13.0'
+    id 'java'
 }
 
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'de.kontext_e.jqassistant.gradle'
-
 group 'de.kontext_e.jqassistant.gradle'
-version '1.0.0-SNAPSHOT'
+version '1.0.1-SNAPSHOT'
 
 repositories {
     jcenter()
@@ -28,10 +15,14 @@ dependencies {
     implementation gradleApi()
     implementation localGroovy()
 
-    compileOnly "com.buschmais.jqassistant.cli:jqassistant-commandline-neo4jv3:1.7.0"
+    compileOnly "com.buschmais.jqassistant.cli:jqassistant-commandline-neo4jv3:1.9.1"
 
     testImplementation gradleTestKit()
     testImplementation('org.junit.jupiter:junit-jupiter:5.5.2')
+}
+
+test {
+    useJUnitPlatform()
 }
 
 pluginBundle {
@@ -50,19 +41,4 @@ gradlePlugin {
             implementationClass = 'de.kontext_e.jqassistant.gradle.JqassistantGradlePlugin'
         }
     }
-}
-
-
-project.ext["jqaversion"] = "1.7.0"
-project.ext["kejqapluginversion"] = "1.7.0"
-
-jqassistant {
-    toolVersion = "${project.jqaversion}"
-
-    plugins "com.buschmais.jqassistant.plugin:junit:${project.jqaversion}"
-    plugins "de.kontext-e.jqassistant.plugin:jqassistant.plugin.git:${project.kejqapluginversion}"
-
-    options "-reset"
-
-    scanDirs ".git"
 }

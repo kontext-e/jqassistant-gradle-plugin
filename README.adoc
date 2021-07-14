@@ -4,7 +4,7 @@ This is the first snapshot of a Gradle plugin for jQAssistant. Currently support
 
 * all jQAssistant tasks: scan, analyze, server, report, available-scopes, available-rules, effective-rules
 * giving any options defined for the CLI
-* configuring the jQAssistant version (default is 1.7.0)
+* configuring the jQAssistant version (default is 1.9.1)
 * configuring additional plugins (Java plugin is added by default)
 * configuring additional artifacts to be scanned (Java compile output is added by default)
 * single module and multi module projects
@@ -14,7 +14,7 @@ This is the first snapshot of a Gradle plugin for jQAssistant. Currently support
 Add in your Gradle project in question the plugin via
 
     plugins {
-        id "de.kontext_e.jqassistant.gradle" version "1.0.0-SNAPSHOT"
+        id "de.kontext_e.jqassistant.gradle" version "1.0.1-SNAPSHOT"
     }
 
 or
@@ -24,7 +24,7 @@ or
             mavenLocal()
         }
         dependencies {
-            classpath 'de.kontext_e.jqassistant.gradle:jqassistant-gradle-plugin:1.0.0-SNAPSHOT'
+            classpath 'de.kontext_e.jqassistant.gradle:jqassistant-gradle-plugin:1.0.1-SNAPSHOT'
         }
     }
 
@@ -44,7 +44,7 @@ or
 
 You can go with the defaults or configure the plugin, e.g. this way:
 
-    project.ext["jqaversion"] = "1.7.0"
+    project.ext["jqaversion"] = "1.9.1"
     project.ext["kejqapluginversion"] = "1.7.0"
     jqassistant {
         toolVersion = "${project.jqaversion}"
@@ -61,6 +61,7 @@ Note that if you have multiple options or scanDirs, just add multiple lines as s
 
 == Tested Gradle Versions
 
+* 6.8.3: works
 * 5.6.3: works
 * 5.5.1: works
 * 5.4.1: works
@@ -73,6 +74,7 @@ Note that if you have multiple options or scanDirs, just add multiple lines as s
 
 == Tested jQAssistant Versions
 
+* 1.9.1: works
 * 1.7.0: works
 * 1.6.0: works
 * 1.5.0: works
