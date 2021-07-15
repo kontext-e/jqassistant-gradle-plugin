@@ -15,7 +15,7 @@ dependencies {
     implementation gradleApi()
     implementation localGroovy()
 
-    compileOnly "com.buschmais.jqassistant.cli:jqassistant-commandline-neo4jv3:1.9.1"
+    compileOnly "com.buschmais.jqassistant.cli:jqassistant-commandline-neo4jv3:1.10.0"
 
     testImplementation gradleTestKit()
     testImplementation('org.junit.jupiter:junit-jupiter:5.5.2')

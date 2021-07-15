@@ -13,7 +13,8 @@ repositories {
 }
 
 jqassistant {
-    toolVersion jqaversion
+    // different jQA version than default can be configured
+    // toolVersion jqaversion
     plugins "com.buschmais.jqassistant.plugin:java:$jqaversion"
     plugins "de.kontext-e.jqassistant.plugin:jqassistant.plugin.git:$kejqapluginversion"
 
