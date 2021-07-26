@@ -1,6 +1,7 @@
 package de.kontext_e.jqassistant.gradle;
 
 import com.buschmais.jqassistant.commandline.CliExecutionException;
+import com.buschmais.jqassistant.commandline.CliRuleViolationException;
 import com.buschmais.jqassistant.commandline.Main;
 import com.buschmais.jqassistant.commandline.Task;
 import com.buschmais.jqassistant.commandline.task.DefaultTaskFactoryImpl;
@@ -51,6 +52,8 @@ public class JqassistantExecutor implements JqassistantWorker {
             try {
                 Main main = new Main(taskFactory);
                 main.run(spec.getArgs().toArray(new String[0]));
+            } catch (CliRuleViolationException e) {
+                throw new RuntimeException(e);
             } catch (Exception e) {
                 LOGGER.error("Error while executing jQAssistant: " + e, e);
             }
