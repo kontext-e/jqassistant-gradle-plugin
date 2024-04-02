@@ -49,7 +49,8 @@ public class JqassistantGradlePlugin implements Plugin<Project> {
     }
 
     private void addDependencyForCli(Project project, DependencySet dependencies, String toolVersion) {
-        String artifact = "com.buschmais.jqassistant.cli:jqassistant-commandline-neo4jv3:";
+        // TODO How to make this dependant on JVM (v5 for > 17 / v4 otherwise)?
+        String artifact = "com.buschmais.jqassistant.cli:jqassistant-commandline-neo4jv5:";
 
         if(toolVersion.startsWith("1.2")) {
             // in 1.2 it was a different name
