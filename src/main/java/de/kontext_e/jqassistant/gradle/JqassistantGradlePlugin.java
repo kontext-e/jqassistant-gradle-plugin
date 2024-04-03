@@ -92,6 +92,7 @@ public class JqassistantGradlePlugin implements Plugin<Project> {
             jqassistant.setClasspath(config);
             jqassistant.addArg(name);
             jqassistant.setExtension(jqassistantPluginExtension);
+            jqassistant.setGroup("jQAssistant");
         });
         jqa.setDescription(format("Executes jQAssistant task '%s'.",name));
         return jqa;
