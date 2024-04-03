@@ -41,6 +41,8 @@ public class JqassistantGradlePlugin implements Plugin<Project> {
         registerTask(project, config, jqassistantPluginExtension, "available-scopes");
         registerTask(project, config, jqassistantPluginExtension, "available-rules");
         registerTask(project, config, jqassistantPluginExtension, "effective-rules");
+        registerTask(project, config, jqassistantPluginExtension, "reset");
+        registerTask(project, config, jqassistantPluginExtension, "list-plugins");
         final Jqassistant scanTask = registerTask(project, config, jqassistantPluginExtension, "scan");
         scanTask.projectToScan(project);
 
