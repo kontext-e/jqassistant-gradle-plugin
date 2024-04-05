@@ -4,8 +4,8 @@ plugins {
 }
 
 ext {
-    jqaversion = "1.9.1"
-    kejqapluginversion = "1.7.0"
+    jqaversion = "2.1.0"
+    kejqapluginversion = "1.12.0"
 }
 
 repositories {
@@ -17,7 +17,8 @@ jqassistant {
     plugins "com.buschmais.jqassistant.plugin:java:$jqaversion"
     plugins "de.kontext-e.jqassistant.plugin:jqassistant.plugin.git:$kejqapluginversion"
 
-    options "-reset"
+    // TODO Which Options are available? '-reset' seems to fail
+//    options "-reset"
 
     scanDirs "."
 }

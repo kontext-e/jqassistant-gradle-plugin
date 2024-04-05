@@ -59,6 +59,7 @@ Note that if you have multiple options or scanDirs, just add multiple lines as s
         scanDirs ".git"
         scanDirs "doc/arc42"
 
+// TODO Carefully test with more current versions
 == Tested Gradle Versions
 
 * 6.8.3: works
@@ -72,6 +73,7 @@ Note that if you have multiple options or scanDirs, just add multiple lines as s
 * 4.10: works
 * 4.9 and below: does not work
 
+// TODO Will it still work with jQA < 2.x?
 == Tested jQAssistant Versions
 
 * 1.9.1: works

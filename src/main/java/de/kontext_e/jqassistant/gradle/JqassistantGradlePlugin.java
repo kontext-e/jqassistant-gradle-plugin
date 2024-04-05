@@ -41,6 +41,8 @@ public class JqassistantGradlePlugin implements Plugin<Project> {
         registerTask(project, config, jqassistantPluginExtension, "available-scopes");
         registerTask(project, config, jqassistantPluginExtension, "available-rules");
         registerTask(project, config, jqassistantPluginExtension, "effective-rules");
+        registerTask(project, config, jqassistantPluginExtension, "reset");
+        registerTask(project, config, jqassistantPluginExtension, "list-plugins");
         final Jqassistant scanTask = registerTask(project, config, jqassistantPluginExtension, "scan");
         scanTask.projectToScan(project);
 
@@ -49,7 +51,8 @@ public class JqassistantGradlePlugin implements Plugin<Project> {
     }
 
     private void addDependencyForCli(Project project, DependencySet dependencies, String toolVersion) {
-        String artifact = "com.buschmais.jqassistant.cli:jqassistant-commandline-neo4jv3:";
+        // TODO How to make this dependant on JVM (v5 for > 17 / v4 otherwise)?
+        String artifact = "com.buschmais.jqassistant.cli:jqassistant-commandline-neo4jv5:";
 
         if(toolVersion.startsWith("1.2")) {
             // in 1.2 it was a different name
@@ -89,6 +92,7 @@ public class JqassistantGradlePlugin implements Plugin<Project> {
             jqassistant.setClasspath(config);
             jqassistant.addArg(name);
             jqassistant.setExtension(jqassistantPluginExtension);
+            jqassistant.setGroup("jQAssistant");
         });
         jqa.setDescription(format("Executes jQAssistant task '%s'.",name));
         return jqa;
