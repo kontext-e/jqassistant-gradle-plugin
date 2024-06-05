@@ -21,7 +21,7 @@ public class Jqassistant extends DefaultTask {
     private static final Logger LOGGER = Logging.getLogger(Jqassistant.class);
 
     private final ConfigurableFileCollection classpath;
-    private List<String> args = new ArrayList<>();
+    private final List<String> args = new ArrayList<>();
     private JqassistantPluginExtension extension;
     private Project projectToScan;
 

@@ -6,23 +6,21 @@ import org.gradle.api.tasks.options.Option;
 import java.util.*;
 
 public class JqassistantPluginExtension {
+
     private String toolVersion = "2.1.0";
-    private List<String> plugins = new ArrayList<>();
     private List<String> options = new ArrayList<>();
-    private List<String> scanDirs = new ArrayList<>();
+    private final List<String> plugins = new ArrayList<>();
+    private final List<String> scanDirs = new ArrayList<>();
+
+    /* Getters */
 
     public String getToolVersion() {
         return toolVersion;
     }
 
-    public void setToolVersion(String toolVersion) {
-        this.toolVersion = toolVersion;
-    }
-
     public Collection<String> getPlugins() {
         return Collections.unmodifiableList(plugins);
     }
-
 
     public List<String> getOptions() {
         return Collections.unmodifiableList(options);
@@ -30,6 +28,12 @@ public class JqassistantPluginExtension {
 
     public List<String> getScanDirs() {
         return Collections.unmodifiableList(scanDirs);
+    }
+
+    /* Setters */
+
+    public void setToolVersion(String toolVersion) {
+        this.toolVersion = toolVersion;
     }
 
     @Option(option = "args", description = "Command line arguments passed to the main class.")
@@ -41,6 +45,8 @@ public class JqassistantPluginExtension {
         this.options = applicationArgs;
         return this;
     }
+
+    /* Gradle DSL Setters */
 
     public JqassistantPluginExtension plugins(Object... args) {
         fillInto(args, plugins);

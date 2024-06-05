@@ -9,8 +9,6 @@ import java.util.concurrent.CountDownLatch;
 public class JqassistantExecutor implements JqassistantWorker {
     private static final Logger LOGGER = Logging.getLogger(JqassistantExecutor.class);
 
-    public static final CountDownLatch LATCH = new CountDownLatch(1);
-
     @Override
     public JqassistantResult run(JqassistantSpec spec) {
         final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
