@@ -7,7 +7,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 
 public class JqassistantSpec implements Serializable {
-    private List<String> args = new ArrayList<>();
+    private final List<String> args = new ArrayList<>();
 
     public List<String> getArgs() {
         return args;

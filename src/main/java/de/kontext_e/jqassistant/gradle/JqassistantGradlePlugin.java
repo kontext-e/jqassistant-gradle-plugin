@@ -11,7 +11,7 @@ import static java.lang.String.format;
 
 public class JqassistantGradlePlugin implements Plugin<Project> {
     public void apply(@NotNull Project project) {
-         JqassistantPluginExtension jqassistantPluginExtension = getPluginExtension(project);
+        JqassistantPluginExtension jqassistantPluginExtension = getPluginExtension(project);
         Configuration config = getPluginConfiguration(project, jqassistantPluginExtension);
         registerTasks(project, config, jqassistantPluginExtension);
     }
@@ -58,10 +58,10 @@ public class JqassistantGradlePlugin implements Plugin<Project> {
     }
 
     private void addAdditionalPlugins(Project project, DependencySet dependencies, JqassistantPluginExtension jqassistantPluginExtension) {
-        if (jqassistantPluginExtension.getPlugins() != null) {
-            for (String plugin : jqassistantPluginExtension.getPlugins()) {
-                dependencies.add(project.getDependencies().create(plugin));
-            }
+        if (jqassistantPluginExtension.getPlugins() == null) return;
+
+        for (String plugin : jqassistantPluginExtension.getPlugins()) {
+            dependencies.add(project.getDependencies().create(plugin));
         }
     }
 
@@ -82,6 +82,7 @@ public class JqassistantGradlePlugin implements Plugin<Project> {
 
     private Jqassistant registerTask(Project project, Configuration config, JqassistantPluginExtension jqassistantPluginExtension, String name) {
         return project.getTasks().create(name, Jqassistant.class, jqassistant -> {
+            jqassistant.getMainClass().set("com.buschmais.jqassistant.commandline.Main");
             jqassistant.setClasspath(config);
             jqassistant.addArg(name);
             jqassistant.setExtension(jqassistantPluginExtension);
