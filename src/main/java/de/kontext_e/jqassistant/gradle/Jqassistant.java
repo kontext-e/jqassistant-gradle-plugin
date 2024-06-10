@@ -51,9 +51,10 @@ public class Jqassistant extends JavaExec {
 
     private void addConventionScanDirs(Project rootProject) {
         try {
-            final JavaPluginExtension javaPluginExtension = rootProject.getExtensions().getByType(JavaPluginExtension.class);
-            if (!javaPluginExtension.getSourceSets().isEmpty()) {
-                for (SourceSet sourceSet : javaPluginExtension.getSourceSets()) {
+            //necessary for compatibility with gradle 6.9-8.8; for gradle 7.2-9.0+ convention-->Extension
+            final JavaPluginConvention javaPluginConvention = rootProject.getConvention().getPlugin(JavaPluginConvention.class);
+            if (javaPluginConvention != null && !javaPluginConvention.getSourceSets().isEmpty()) {
+                for (SourceSet sourceSet : javaPluginConvention.getSourceSets()) {
                     FileCollection presentClassDirs = sourceSet.getOutput().getClassesDirs().filter(File::exists);
                     for (File asPath : presentClassDirs.getFiles()) {
                         extension.scanDirs("java:classpath::" + asPath.getAbsolutePath());

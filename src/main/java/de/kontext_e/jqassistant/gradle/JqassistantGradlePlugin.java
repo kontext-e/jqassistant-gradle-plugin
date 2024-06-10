@@ -5,12 +5,11 @@ import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.Dependency;
 import org.gradle.api.artifacts.DependencySet;
-import org.jetbrains.annotations.NotNull;
 
 import static java.lang.String.format;
 
 public class JqassistantGradlePlugin implements Plugin<Project> {
-    public void apply(@NotNull Project project) {
+    public void apply(Project project) {
         JqassistantPluginExtension jqassistantPluginExtension = getPluginExtension(project);
         Configuration config = getPluginConfiguration(project, jqassistantPluginExtension);
         registerTasks(project, config, jqassistantPluginExtension);
