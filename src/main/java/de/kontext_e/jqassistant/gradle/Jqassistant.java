@@ -1,5 +1,6 @@
 package de.kontext_e.jqassistant.gradle;
 
+import org.gradle.api.JavaVersion;
 import org.gradle.api.Project;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.logging.Logger;
@@ -26,14 +27,14 @@ public class Jqassistant extends JavaExec {
     @Override
     @TaskAction
     public void exec() {
-        //Necessary to use neo4Jv4 with Java 17 and above
-        //Problem is: "unkown option '--add-opens'" although it works on commandline
-//        setJvmArgs(List.of(
-//                "--add-opens java.base/java.lang=ALL-UNNAMED",
-//                "--add-opens java.base/sun.nio.ch=ALL-UNNAMED",
-//                "--add-opens java.base/java.io=ALL-UNNAMED"
-//        ));
-        setStandardInput(System.in);
+        if (Integer.parseInt(JavaVersion.current().getMajorVersion()) > 11) {
+            setJvmArgs(List.of(
+                    "--add-opens=java.base/java.lang=ALL-UNNAMED",
+                    "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED",
+                    "--add-opens=java.base/java.io=ALL-UNNAMED",
+                    "--add-opens=java.base/java.nio=ALL-UNNAMED"
+            ));
+        }
         args(createSpec().getArgs());
         super.exec();
     }
