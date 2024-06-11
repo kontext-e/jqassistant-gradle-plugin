@@ -5,92 +5,92 @@ import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.Dependency;
 import org.gradle.api.artifacts.DependencySet;
-import org.gradle.api.artifacts.ModuleDependency;
-import org.gradle.util.WrapUtil;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static java.lang.String.format;
 
 public class JqassistantGradlePlugin implements Plugin<Project> {
     public void apply(Project project) {
-        final JqassistantPluginExtension jqassistantPluginExtension = project.getExtensions().create("jqassistant", JqassistantPluginExtension.class);
+        JqassistantPluginExtension jqassistantPluginExtension = getPluginExtension(project);
+        Configuration config = getConfiguration(project, jqassistantPluginExtension);
+        registerTasks(project, config, jqassistantPluginExtension);
+    }
 
-        final Configuration config = project.getConfigurations().create("jqassistant")
+    private JqassistantPluginExtension getPluginExtension(Project project) {
+        return project.getExtensions().create("jqassistant", JqassistantPluginExtension.class);
+    }
+
+    private Configuration getConfiguration(Project project, JqassistantPluginExtension jqassistantPluginExtension) {
+        final Configuration config = createConfig(project);
+        addDependenciesToConfig(project, jqassistantPluginExtension, config);
+        return config;
+    }
+
+    private Configuration createConfig(Project project) {
+        return project
+                .getConfigurations()
+                .create("jqassistant")
                 .setVisible(false)
                 .setDescription("The data artifacts to be processed for this plugin.");
+    }
+
+    private void addDependenciesToConfig(Project project, JqassistantPluginExtension jqassistantPluginExtension, Configuration config) {
+        final String toolVersion = jqassistantPluginExtension.getToolVersion();
 
         config.defaultDependencies(dependencies -> {
-            final String toolVersion = jqassistantPluginExtension.getToolVersion();
-
             addDependencyForCli(project, dependencies, toolVersion);
             addDependencyForJava(project, dependencies, toolVersion);
-
-            if (jqassistantPluginExtension.getPlugins() != null) {
-                for (String plugin : jqassistantPluginExtension.getPlugins()) {
-                    dependencies.add(project.getDependencies().create(plugin));
-                }
-
-            }
+            addAdditionalPlugins(project, dependencies, jqassistantPluginExtension);
         });
+    }
 
+    private void addDependencyForCli(Project project, DependencySet dependencies, String toolVersion) {
+        // TODO How to make this dependant on JVM (v5 for > 17 / v4 otherwise)?
+        String artifact = "com.buschmais.jqassistant.cli:jqassistant-commandline-neo4jv4:";
+        Dependency dependency = project.getDependencies().create(artifact + toolVersion);
+        dependencies.add(dependency);
+    }
+
+    private void addDependencyForJava(Project project, DependencySet dependencies, String toolVersion) {
+        String artifact = "com.buschmais.jqassistant.plugin:java:";
+        Dependency dependency = project.getDependencies().create(artifact + toolVersion);
+        dependencies.add(dependency);
+    }
+
+    private void addAdditionalPlugins(Project project, DependencySet dependencies, JqassistantPluginExtension jqassistantPluginExtension) {
+        if (jqassistantPluginExtension.getPlugins() == null) return;
+
+        for (String plugin : jqassistantPluginExtension.getPlugins()) {
+            dependencies.add(project.getDependencies().create(plugin));
+        }
+    }
+
+    private void registerTasks(Project project, Configuration config, JqassistantPluginExtension jqassistantPluginExtension) {
         registerTask(project, config, jqassistantPluginExtension, "analyze");
         registerTask(project, config, jqassistantPluginExtension, "server");
         registerTask(project, config, jqassistantPluginExtension, "report");
         registerTask(project, config, jqassistantPluginExtension, "available-scopes");
         registerTask(project, config, jqassistantPluginExtension, "available-rules");
         registerTask(project, config, jqassistantPluginExtension, "effective-rules");
-        final Jqassistant scanTask = registerTask(project, config, jqassistantPluginExtension, "scan");
-        scanTask.projectToScan(project);
+        registerTask(project, config, jqassistantPluginExtension, "effective-configuration");
+        registerTask(project, config, jqassistantPluginExtension, "reset");
+        registerTask(project, config, jqassistantPluginExtension, "list-plugins");
+        registerTask(project, config, jqassistantPluginExtension, "scan").projectToScan(project);
 
         // this is for dynamically defined task of this type in build.gradle
         project.getTasks().withType(Jqassistant.class).configureEach(jqassistant -> jqassistant.setClasspath(config));
     }
 
-    private void addDependencyForCli(Project project, DependencySet dependencies, String toolVersion) {
-        String artifact = "com.buschmais.jqassistant.cli:jqassistant-commandline-neo4jv3:";
-
-        if(toolVersion.startsWith("1.2")) {
-            // in 1.2 it was a different name
-            artifact = "com.buschmais.jqassistant:commandline:";
-        }
-
-        if(toolVersion.startsWith("1.3")) {
-            // in 1.3 it was another different name
-            artifact = "com.buschmais.jqassistant:jqassistant-commandline:";
-        }
-
-        final Dependency dependency = project.getDependencies().create(artifact + toolVersion);
-        if(dependency instanceof ModuleDependency) {
-            // java plugin brings own asm dependency which conflicts with Neo4js one
-            ModuleDependency md = (ModuleDependency) dependency;
-            md.exclude(WrapUtil.toMap("module", "asm"));
-        }
-        dependencies.add(dependency);
-    }
-
-    private void addDependencyForJava(Project project, DependencySet dependencies, String toolVersion) {
-        String javaPluginVersion = toolVersion;
-
-        // in some previous versions, the version number of Java plugin was only major.minor
-        final Map<String, String> toolVersionToJavaPluginVersion = new HashMap<>();
-        toolVersionToJavaPluginVersion.put("1.4.0", "1.4");
-        toolVersionToJavaPluginVersion.put("1.3.0", "1.3");
-        toolVersionToJavaPluginVersion.put("1.2.0", "1.2");
-        if(toolVersionToJavaPluginVersion.containsKey(javaPluginVersion)) {
-            javaPluginVersion = toolVersionToJavaPluginVersion.get(javaPluginVersion);
-        }
-        dependencies.add(project.getDependencies().create("com.buschmais.jqassistant.plugin:java:"+ javaPluginVersion));
-    }
-
     private Jqassistant registerTask(Project project, Configuration config, JqassistantPluginExtension jqassistantPluginExtension, String name) {
-        final Jqassistant jqa = project.getTasks().create(name, Jqassistant.class, jqassistant -> {
+        return project.getTasks().create(name, Jqassistant.class, jqassistant -> {
+            jqassistant.getMainClass().set("com.buschmais.jqassistant.commandline.Main");
+            jqassistant.setStandardInput(System.in);
+            jqassistant.setStandardOutput(System.out);
+            jqassistant.setErrorOutput(System.err);
             jqassistant.setClasspath(config);
             jqassistant.addArg(name);
             jqassistant.setExtension(jqassistantPluginExtension);
+            jqassistant.setGroup("jQAssistant");
+            jqassistant.setDescription(format("Executes jQAssistant task '%s'.",name));
         });
-        jqa.setDescription(format("Executes jQAssistant task '%s'.",name));
-        return jqa;
     }
 }

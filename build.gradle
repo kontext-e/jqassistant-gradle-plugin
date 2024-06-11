@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'de.kontext_e.jqassistant.gradle'
-version '1.0.2-SNAPSHOT'
+version '2.0.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -15,10 +15,18 @@ dependencies {
     implementation gradleApi()
     implementation localGroovy()
 
-    compileOnly "com.buschmais.jqassistant.cli:jqassistant-commandline-neo4jv3:1.10.0"
+    // TODO: How to make use of neo4jv4 (with Java 11) and neo4jv5 (with Java 17)?
+    // Ensure this is the same base neo4j version as for the runtime dependency added by JqassistantGradlePlugin.java
+    compileOnly "com.buschmais.jqassistant.cli:jqassistant-commandline-neo4jv4:2.1.0"
 
     testImplementation gradleTestKit()
     testImplementation('org.junit.jupiter:junit-jupiter:5.5.2')
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
 }
 
 test {

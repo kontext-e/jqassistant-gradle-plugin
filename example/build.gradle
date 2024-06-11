@@ -1,11 +1,11 @@
 plugins {
-    id('de.kontext_e.jqassistant.gradle')
+    id('de.kontext_e.jqassistant.gradle') version "2.0.0-SNAPSHOT"
     id('java')
 }
 
 ext {
-    jqaversion = "1.9.1"
-    kejqapluginversion = "1.7.0"
+    jqaversion = "2.2.0"
+    kejqapluginversion = "2.1.0"
 }
 
 repositories {
@@ -13,13 +13,22 @@ repositories {
 }
 
 jqassistant {
-    // different jQA version than default can be configured
-    // toolVersion jqaversion
-    plugins "com.buschmais.jqassistant.plugin:java:$jqaversion"
-    plugins "de.kontext-e.jqassistant.plugin:jqassistant.plugin.git:$kejqapluginversion"
+    // Allows for different jqa version
+    toolVersion "2.1.0"
 
-    options "-reset"
+    // Allows for custom location of config file (default is shown below) (multiple possible)
+    configFile "jqassistant/.jqassistant.yml"
 
-    scanDirs "../.git"
-    scanDirs "java:classpath::../build/classes/java/main"
+
+    /* Deprecated Features below, use config file instead */
+
+    // Declare plugins (multiple possible)
+    plugin "de.kontext-e.jqassistant.plugin:jqassistant.plugin.git:$kejqapluginversion"
+
+    // Declare files/directories to be scanned, java sources are added automatically (multiple possible)
+    // (disabled when config file is used; automatic adding of sources does not work either)
+    scanDir "../.git"
+
+    // Set additional args (multiple possible)
+    options "-C jqassistant/.jqassistant.yml"
 }

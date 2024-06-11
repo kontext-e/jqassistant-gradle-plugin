@@ -2,19 +2,32 @@
 
 This is the first snapshot of a Gradle plugin for jQAssistant. Currently supported are:
 
-* all jQAssistant tasks: scan, analyze, server, report, available-scopes, available-rules, effective-rules
+* all jQAssistant tasks: scan, analyze, server, report, available-scopes, available-rules, effective-rules, effective-configuration, reset, list-plugins
 * giving any options defined for the CLI
-* configuring the jQAssistant version (default is 1.9.1)
+* configuring the jQAssistant version (default is 2.1.0)
 * configuring additional plugins (Java plugin is added by default)
 * configuring additional artifacts to be scanned (Java compile output is added by default)
+* configuring .jqassistant config file location
 * single module and multi module projects
 
+== Requirements
+
+* Java 11 or above (see gradle compatibility below)
+* Gradle 6.9 - 8.8 (see gradle compatibility below)
+
+To increase compatibility with older java version, this plugin uses jQAssistants neo4Jv4 variant of jQA 2
+
 == Usage
+
+For a sample project check out the example project in this repository.
+The https://github.com/kontext-e/jqassistant-gradle-plugin/blob/master/example/build.gradle[build.gradle] file gives an overview of how to apply and configure the plugin.
+The https://github.com/kontext-e/jqassistant-gradle-plugin/blob/master/example/jqassistant/.jqassistant.yml[.jqassistant.yml] gives an example of how to configure jQAssistant.
+For more information, check out the https://jqassistant.github.io/jqassistant/doc/2.1.0/#_yaml_files[jQAssistant User Manual]
 
 Add in your Gradle project in question the plugin via
 
     plugins {
-        id "de.kontext_e.jqassistant.gradle" version "1.0.1-SNAPSHOT"
+        id "de.kontext_e.jqassistant.gradle" version "2.1.0"
     }
 
 or
@@ -24,7 +37,7 @@ or
             mavenLocal()
         }
         dependencies {
-            classpath 'de.kontext_e.jqassistant.gradle:jqassistant-gradle-plugin:1.0.1-SNAPSHOT'
+            classpath 'de.kontext_e.jqassistant.gradle:jqassistant-gradle-plugin:2.1.0'
         }
     }
 
@@ -48,36 +61,34 @@ You can go with the defaults or configure the plugin, e.g. this way:
     project.ext["kejqapluginversion"] = "1.7.0"
     jqassistant {
         toolVersion = "${project.jqaversion}"
+        configFile "jqassistant/.jqassistant.yml"
+        //Deprecated but still work
         plugins "com.buschmais.jqassistant.plugin:junit:${project.jqaversion}"
         plugins "de.kontext-e.jqassistant.plugin:jqassistant.plugin.git:${project.kejqapluginversion}"
         options "-reset"
+        //Deprecated, only works when no config file is used
         scanDirs ".git"
     }
 
-Note that if you have multiple options or scanDirs, just add multiple lines as seen with plugins, e.g.
+Note that if you have multiple options, config files or scanDirs, just add multiple lines as seen with plugins, e.g.
 
         scanDirs ".git"
         scanDirs "doc/arc42"
 
+// TODO Carefully test with more current versions
 == Tested Gradle Versions
 
-* 6.8.3: works
-* 5.6.3: works
-* 5.5.1: works
-* 5.4.1: works
-* 5.3.1: works
-* 5.2.1: works
-* 5.1.1: works
-* 5.0: works
-* 4.10: works
-* 4.9 and below: does not work
+* 8.8 works (using java 11, 17 and 21)
+* 8.7 works (using java 11, 17 and 21)
+* 7.6 works (using java 11 and 17)
+* 7.3 works (using java 11 and 17)
+* 7.2 works (using java 11)
+* 7.1 works (using java 11)
+* 7.0 works (using java 11)
+* 6.9 works (using java 11)
+* 6.8 and below: does not work (version 1.0.1-SNAPSHOT works down to 4.10)
 
 == Tested jQAssistant Versions
 
-* 1.9.1: works
-* 1.7.0: works
-* 1.6.0: works
-* 1.5.0: works
-* 1.4.0: works
-* 1.3.0: Gradle plugin works, but used Neo4j Version throws an exception
-* 1.2.0: works
+* 2.1.0
+* for jqa 1.X use version 1.0.1-SNAPSHOT version of this Plugin

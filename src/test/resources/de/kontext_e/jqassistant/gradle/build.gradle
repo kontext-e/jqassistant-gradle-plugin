@@ -1,11 +1,11 @@
 plugins {
-    id('de.kontext_e.jqassistant.gradle')
+    id('de.kontext_e.jqassistant.gradle') version "2.0.0-SNAPSHOT"
     id('java')
 }
 
 ext {
-    jqaversion = "1.9.1"
-    kejqapluginversion = "1.7.0"
+    jqaversion = "2.2.0"
+    kejqapluginversion = "2.1.0"
 }
 
 repositories {
@@ -13,11 +13,10 @@ repositories {
 }
 
 jqassistant {
-    toolVersion jqaversion
-    plugins "com.buschmais.jqassistant.plugin:java:$jqaversion"
-    plugins "de.kontext-e.jqassistant.plugin:jqassistant.plugin.git:$kejqapluginversion"
+    toolVersion "2.1.0"
 
-    options "-reset"
+    plugin "de.kontext-e.jqassistant.plugin:jqassistant.plugin.git:$kejqapluginversion"
 
-    scanDirs "."
+    scanDir "."
+
 }
