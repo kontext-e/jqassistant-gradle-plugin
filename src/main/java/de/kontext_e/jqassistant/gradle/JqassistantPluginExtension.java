@@ -32,15 +32,41 @@ public class JqassistantPluginExtension {
 
     /* Setters */
 
+
     public void setToolVersion(String toolVersion) {
         this.toolVersion = toolVersion;
     }
 
+    /**
+     * Adds plugins to jQAssistant
+     * @deprecated Use Config File instead.
+     * Specify location of Config File by using "config" property.
+     * Default location is jqassistant/.jqassistant.yml
+     * @see <a href="https://jqassistant.github.io/jqassistant/doc/2.1.0/#_yaml_files">jQA User Manual</a>
+     *
+     * @param plugin The plugin to be added to jQA using the gradle dependency syntax
+     */
+    @Deprecated
+    public void setPlugin(String plugin){
+        fillInto(new String[] {plugin}, plugins);
+    }
+
+    @Deprecated
     @Option(option = "args", description = "Command line arguments passed to the main class.")
     public JqassistantPluginExtension setArgsString(String args) {
         return setOptions(Arrays.asList(args.split(" ")));
     }
 
+    /**
+     * Sets misc Commandline options for jQAssistant
+     * @deprecated Use Config File instead.
+     * Specify location of Config File by using "config" property.
+     * Default location is jqassistant/.jqassistant.yml
+     * @see <a href="https://jqassistant.github.io/jqassistant/doc/2.1.0/#_yaml_files">jQA User Manual</a>
+     *
+     * @param applicationArgs The Arguments for JQAssistant
+     */
+    @Deprecated
     public JqassistantPluginExtension setOptions(List<String> applicationArgs) {
         this.options = applicationArgs;
         return this;
@@ -48,19 +74,47 @@ public class JqassistantPluginExtension {
 
     /* Gradle DSL Setters */
 
-    public JqassistantPluginExtension plugins(Object... args) {
+    /**
+     * Adds plugins to jQAssistant
+     * @deprecated Use Config File instead.
+     * Specify location of Config File by using "config" property.
+     * Default location is jqassistant/.jqassistant.yml
+     * @see <a href="https://jqassistant.github.io/jqassistant/doc/2.1.0/#_yaml_files">jQA User Manual</a>
+     *
+     * @param args The plugin(s) to be added to jQA using the gradle dependency syntax
+     */
+    @Deprecated
+    public void plugin(Object... args) {
         fillInto(args, plugins);
-        return this;
     }
 
-    public JqassistantPluginExtension scanDirs(Object... args) {
+    /**
+     * Declares what directories jQAssistant should scan. Java sources are automatically added and don't need to be declared explicitly.
+     * @deprecated Use Config File instead.
+     * Specify location of Config File by using "config" property.
+     * Default location is jqassistant/.jqassistant.yml
+     * <b>If config file is set, this option won't work</b>
+     * @see <a href="https://jqassistant.github.io/jqassistant/doc/2.1.0/#_yaml_files">jQA User Manual</a>
+     *
+     * @param args the (list of) directories to be scanned
+     */
+    @Deprecated
+    public void scanDir(Object... args) {
         fillInto(args, scanDirs);
-        return this;
     }
 
-    public JqassistantPluginExtension options(Object... args) {
+    /**
+     * Sets misc Commandline options for jQAssistant
+     * @deprecated Use Config File instead.
+     * Specify location of Config File by using "config" property.
+     * Default location is jqassistant/.jqassistant.yml
+     * @see <a href="https://jqassistant.github.io/jqassistant/doc/2.1.0/#_yaml_files">jQA User Manual</a>
+     *
+     * @param args The Arguments for JQAssistant
+     */
+    @Deprecated
+    public void options(Object... args) {
         fillInto(args, options);
-        return this;
     }
 
     private void fillInto(Object[] args, List<String> target) {
