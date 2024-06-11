@@ -13,13 +13,11 @@ public class JqassistantSpec implements Serializable {
         return args;
     }
 
-    public JqassistantSpec addArgs(List<String> args) {
+    public void addArgs(List<String> args) {
         this.args.addAll(args);
-        return this;
     }
 
-    public JqassistantSpec addArgs(String... args) {
+    public void addArgs(String... args) {
         this.args.addAll(asList(args));
-        return this;
     }
 }

@@ -11,7 +11,7 @@ import static java.lang.String.format;
 public class JqassistantGradlePlugin implements Plugin<Project> {
     public void apply(Project project) {
         JqassistantPluginExtension jqassistantPluginExtension = getPluginExtension(project);
-        Configuration config = getPluginConfiguration(project, jqassistantPluginExtension);
+        Configuration config = getConfiguration(project, jqassistantPluginExtension);
         registerTasks(project, config, jqassistantPluginExtension);
     }
 
@@ -19,7 +19,7 @@ public class JqassistantGradlePlugin implements Plugin<Project> {
         return project.getExtensions().create("jqassistant", JqassistantPluginExtension.class);
     }
 
-    private Configuration getPluginConfiguration(Project project, JqassistantPluginExtension jqassistantPluginExtension) {
+    private Configuration getConfiguration(Project project, JqassistantPluginExtension jqassistantPluginExtension) {
         final Configuration config = createConfig(project);
         addDependenciesToConfig(project, jqassistantPluginExtension, config);
         return config;
@@ -34,9 +34,9 @@ public class JqassistantGradlePlugin implements Plugin<Project> {
     }
 
     private void addDependenciesToConfig(Project project, JqassistantPluginExtension jqassistantPluginExtension, Configuration config) {
-        config.defaultDependencies(dependencies -> {
-            final String toolVersion = jqassistantPluginExtension.getToolVersion();
+        final String toolVersion = jqassistantPluginExtension.getToolVersion();
 
+        config.defaultDependencies(dependencies -> {
             addDependencyForCli(project, dependencies, toolVersion);
             addDependencyForJava(project, dependencies, toolVersion);
             addAdditionalPlugins(project, dependencies, jqassistantPluginExtension);
@@ -71,6 +71,7 @@ public class JqassistantGradlePlugin implements Plugin<Project> {
         registerTask(project, config, jqassistantPluginExtension, "available-scopes");
         registerTask(project, config, jqassistantPluginExtension, "available-rules");
         registerTask(project, config, jqassistantPluginExtension, "effective-rules");
+        registerTask(project, config, jqassistantPluginExtension, "effective-configuration");
         registerTask(project, config, jqassistantPluginExtension, "reset");
         registerTask(project, config, jqassistantPluginExtension, "list-plugins");
         registerTask(project, config, jqassistantPluginExtension, "scan").projectToScan(project);
@@ -90,6 +91,4 @@ public class JqassistantGradlePlugin implements Plugin<Project> {
             jqassistant.setDescription(format("Executes jQAssistant task '%s'.",name));
         });
     }
-
-
 }
