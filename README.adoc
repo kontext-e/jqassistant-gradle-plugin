@@ -20,8 +20,8 @@ To increase compatibility with older java version, this plugin uses jQAssistants
 == Usage
 
 For a sample project check out the example project in this repository.
-The https://xxx[build.gradle] file gives an overview of how to apply and configure the plugin.
-The https://xxx[.jqassistant.yml] gives an example of how to configure jQAssistant.
+The https://github.com/kontext-e/jqassistant-gradle-plugin/blob/master/example/build.gradle[build.gradle] file gives an overview of how to apply and configure the plugin.
+The https://github.com/kontext-e/jqassistant-gradle-plugin/blob/master/example/jqassistant/.jqassistant.yml[.jqassistant.yml] gives an example of how to configure jQAssistant.
 For more information, check out the https://jqassistant.github.io/jqassistant/doc/2.1.0/#_yaml_files[jQAssistant User Manual]
 
 Add in your Gradle project in question the plugin via
