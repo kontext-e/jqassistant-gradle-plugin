@@ -90,9 +90,16 @@ public class Jqassistant extends JavaExec {
         final JqassistantSpec jqassistantSpec = new JqassistantSpec();
 
         addMiscArgumentsFromExtensionToSpec(jqassistantSpec);
+        addConfigFilesFromExtensionToSpec(jqassistantSpec);
         addScanDirectoriesFromExtensionToSpec(jqassistantSpec);
 
         return jqassistantSpec;
+    }
+
+    private void addConfigFilesFromExtensionToSpec(JqassistantSpec jqassistantSpec) {
+        jqassistantSpec.addArgs("-C");
+        jqassistantSpec.addArgs("jqassistant/.jqassistant.yml");
+        jqassistantSpec.addArgs(extension.getConfigFiles());
     }
 
     private void addScanDirectoriesFromExtensionToSpec(JqassistantSpec jqassistantSpec) {

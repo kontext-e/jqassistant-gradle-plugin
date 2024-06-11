@@ -5,12 +5,17 @@ import org.gradle.api.tasks.options.Option;
 
 import java.util.*;
 
+/**
+ * Enables configuration of Plugin through new, custom gradle 'jqassistant'-block
+ * Setters expose fields to gradle
+ */
 public class JqassistantPluginExtension {
 
     private String toolVersion = "2.1.0";
     private List<String> options = new ArrayList<>();
     private final List<String> plugins = new ArrayList<>();
     private final List<String> scanDirs = new ArrayList<>();
+    private final List<String> configFiles = new ArrayList<>();
 
     /* Getters */
 
@@ -30,11 +35,19 @@ public class JqassistantPluginExtension {
         return Collections.unmodifiableList(scanDirs);
     }
 
+    public List<String> getConfigFiles(){
+        return Collections.unmodifiableList(configFiles);
+    }
+
     /* Setters */
 
 
     public void setToolVersion(String toolVersion) {
         this.toolVersion = toolVersion;
+    }
+
+    public void setConfigFile(String configFileLocation){
+        this.configFiles.add(configFileLocation);
     }
 
     /**
@@ -73,6 +86,10 @@ public class JqassistantPluginExtension {
     }
 
     /* Gradle DSL Setters */
+
+    public void configFile(Object... args){
+        fillInto(args, configFiles);
+    }
 
     /**
      * Adds plugins to jQAssistant

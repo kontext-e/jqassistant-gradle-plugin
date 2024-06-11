@@ -15,7 +15,13 @@ repositories {
 jqassistant {
     toolVersion "2.2.0"
 
-    plugin "com.buschmais.jqassistant.plugin:java:$jqaversion"
+    // Allows for custom location of config file (default is shown below) (multiple possible)
+    configFile "jqassistant/.jqassistant.yml"
+
+
+    /* Deprecated Features below, use config file instead */
+
+    // Declare plugins (multiple possible)
     plugin "de.kontext-e.jqassistant.plugin:jqassistant.plugin.git:$kejqapluginversion"
 
     scanDir "../.git"
