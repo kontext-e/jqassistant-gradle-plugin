@@ -12,7 +12,7 @@ This is the first snapshot of a Gradle plugin for jQAssistant. Currently support
 
 == Requirements
 
-* Java 11 or above (see gradle compatibility below)
+* Java 11 or 17 (see gradle compatibility below)
 * Gradle 6.9 - 8.8 (see gradle compatibility below)
 
 To increase compatibility with older java version, this plugin uses jQAssistants neo4Jv4 variant of jQA 2
@@ -78,8 +78,8 @@ Note that if you have multiple options, config files or scanDirs, just add multi
 // TODO Carefully test with more current versions
 == Tested Gradle Versions
 
-* 8.8 works (using java 11, 17 and 21)
-* 8.7 works (using java 11, 17 and 21)
+* 8.8 works (using java 11 and 17)
+* 8.7 works (using java 11 and 17)
 * 7.6 works (using java 11 and 17)
 * 7.3 works (using java 11 and 17)
 * 7.2 works (using java 11)
