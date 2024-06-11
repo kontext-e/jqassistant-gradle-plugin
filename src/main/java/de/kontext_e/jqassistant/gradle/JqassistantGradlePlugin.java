@@ -84,6 +84,8 @@ public class JqassistantGradlePlugin implements Plugin<Project> {
         return project.getTasks().create(name, Jqassistant.class, jqassistant -> {
             jqassistant.getMainClass().set("com.buschmais.jqassistant.commandline.Main");
             jqassistant.setStandardInput(System.in);
+            jqassistant.setStandardOutput(System.out);
+            jqassistant.setErrorOutput(System.err);
             jqassistant.setClasspath(config);
             jqassistant.addArg(name);
             jqassistant.setExtension(jqassistantPluginExtension);

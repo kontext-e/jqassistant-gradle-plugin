@@ -1,0 +1,28 @@
+jqassistant:
+  plugins:
+    - group-id: de.kontext-e.jqassistant.plugin
+      artifact-id: jqassistant.plugin.asciidoc
+      version: 2.1.0
+  scan:
+    reset: true
+    include:
+      files:
+       - ..\.git
+    properties:
+      #Example for properties
+      json.file.include: '*.json'
+  analyze:
+    rule:
+      # directory: Path\To\Rule\Directory
+    groups:
+      #Don't worry about the concept application failure,
+      #This is purely for demonstration purposes
+      - '*'
+    rule-parameters:
+      # Parameter: 123
+    execute-applied-concepts: true
+  repositories:
+     remotes:
+      #Snapshot only necessary when using snapshot dependencies
+        snapshot:
+          url: https://oss.sonatype.org/content/repositories/snapshots
