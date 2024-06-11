@@ -49,6 +49,9 @@ public class Jqassistant extends JavaExec {
         ));
     }
 
+    /**
+     * Adds java sources to directories to be scanned, does not work, when config file is active
+     */
     private void addDefaultScanDirectoriesToExtension() {
         if(projectToScan == null) return;
 

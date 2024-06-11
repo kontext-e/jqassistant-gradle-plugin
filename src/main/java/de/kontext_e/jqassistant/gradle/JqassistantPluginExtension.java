@@ -110,7 +110,7 @@ public class JqassistantPluginExtension {
      * @deprecated Use Config File instead.
      * Specify location of Config File by using "config" property.
      * Default location is jqassistant/.jqassistant.yml
-     * <b>If config file is set, this option won't work</b>
+     * <b>If config file is set, this option won't work, and java sources are not added automatically!</b>
      * @see <a href="https://jqassistant.github.io/jqassistant/doc/2.1.0/#_yaml_files">jQA User Manual</a>
      *
      * @param args the (list of) directories to be scanned

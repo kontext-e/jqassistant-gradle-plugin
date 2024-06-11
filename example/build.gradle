@@ -4,7 +4,7 @@ plugins {
 }
 
 ext {
-    jqaversion = "2.1.0"
+    jqaversion = "2.2.0"
     kejqapluginversion = "2.1.0"
 }
 
@@ -13,6 +13,7 @@ repositories {
 }
 
 jqassistant {
+    // Allows for different jqa version
     toolVersion "2.2.0"
 
     // Allows for custom location of config file (default is shown below) (multiple possible)
@@ -24,9 +25,10 @@ jqassistant {
     // Declare plugins (multiple possible)
     plugin "de.kontext-e.jqassistant.plugin:jqassistant.plugin.git:$kejqapluginversion"
 
+    // Declare files/directories to be scanned, java sources are added automatically (multiple possible)
+    // (disabled when config file is used; automatic adding of sources does not work either)
     scanDir "../.git"
 
-    options "-C"
-    options "jqassistant/.jqassistant.yml"
-
+    // Set additional args (multiple possible)
+    // options "-C jqassistant/.jqassistant.yml"
 }
