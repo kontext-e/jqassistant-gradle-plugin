@@ -2,9 +2,7 @@ package de.kontext_e.jqassistant.gradle;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
-import org.gradle.api.artifacts.Configuration;
-import org.gradle.api.artifacts.Dependency;
-import org.gradle.api.artifacts.DependencySet;
+import org.gradle.api.artifacts.*;
 
 import static java.lang.String.format;
 
@@ -41,11 +39,23 @@ public class JqassistantGradlePlugin implements Plugin<Project> {
             addDependencyForJava(project, dependencies, toolVersion);
             addAdditionalPlugins(project, dependencies, jqassistantPluginExtension);
         });
+
+        manageLoggerImplementations(config);
+    }
+
+    private void manageLoggerImplementations(Configuration config) {
+        config.resolutionStrategy(resolutionStrategy ->
+            resolutionStrategy.eachDependency(dependencyDetails -> {
+                if (dependencyDetails.getRequested().getName().equals("slf4j-simple")){
+                    dependencyDetails.useVersion("2.0.9");
+                }
+            })
+        );
     }
 
     private void addDependencyForCli(Project project, DependencySet dependencies, String toolVersion) {
         // TODO How to make this dependant on JVM (v5 for > 17 / v4 otherwise)?
-        String artifact = "com.buschmais.jqassistant.cli:jqassistant-commandline-neo4jv4:";
+        String artifact = "com.buschmais.jqassistant.cli:jqassistant-commandline-neo4jv5:";
         Dependency dependency = project.getDependencies().create(artifact + toolVersion);
         dependencies.add(dependency);
     }
