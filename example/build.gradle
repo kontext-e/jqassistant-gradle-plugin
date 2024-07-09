@@ -16,6 +16,12 @@ jqassistant {
     // Allows for different jqa version
     toolVersion "2.1.0"
 
+    // Allows for manual selection of neo4j version.
+    // Available are only 4 or 5
+    // Prioritises compatibility over user choice
+    // If omitted, chosen default depends on current java version
+    neo4jVersion 4
+
     // Allows for custom location of config file (default is shown below) (multiple possible)
     configFile "jqassistant/.jqassistant.yml"
 

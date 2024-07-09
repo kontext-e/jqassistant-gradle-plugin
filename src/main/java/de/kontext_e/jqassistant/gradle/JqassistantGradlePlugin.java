@@ -35,7 +35,7 @@ public class JqassistantGradlePlugin implements Plugin<Project> {
         final String toolVersion = jqassistantPluginExtension.getToolVersion();
 
         config.defaultDependencies(dependencies -> {
-            addDependencyForCli(project, dependencies, toolVersion);
+            addDependencyForCli(project, dependencies, jqassistantPluginExtension);
             addDependencyForJava(project, dependencies, toolVersion);
             addAdditionalPlugins(project, dependencies, jqassistantPluginExtension);
         });
@@ -53,10 +53,11 @@ public class JqassistantGradlePlugin implements Plugin<Project> {
         );
     }
 
-    private void addDependencyForCli(Project project, DependencySet dependencies, String toolVersion) {
-        // TODO How to make this dependant on JVM (v5 for > 17 / v4 otherwise)?
-        String artifact = "com.buschmais.jqassistant.cli:jqassistant-commandline-neo4jv5:";
-        Dependency dependency = project.getDependencies().create(artifact + toolVersion);
+    private void addDependencyForCli(Project project, DependencySet dependencies, JqassistantPluginExtension extension) {
+        int neo4jVersion = extension.getNeo4jVersion();
+        System.out.println("Using Neo4J Version: " + neo4jVersion);
+        String artifact = "com.buschmais.jqassistant.cli:jqassistant-commandline-neo4jv" + neo4jVersion +":";
+        Dependency dependency = project.getDependencies().create(artifact + extension.getToolVersion());
         dependencies.add(dependency);
     }
 
