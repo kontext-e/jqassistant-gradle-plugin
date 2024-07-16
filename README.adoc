@@ -5,6 +5,7 @@ This is the first snapshot of a Gradle plugin for jQAssistant. Currently support
 * all jQAssistant tasks: scan, analyze, server, report, available-scopes, available-rules, effective-rules, effective-configuration, reset, list-plugins
 * giving any options defined for the CLI
 * configuring the jQAssistant version (default is 2.1.0)
+* configuring the neo4J Version (4 or 5, default depends on Java version)
 * configuring additional plugins (Java plugin is added by default)
 * configuring additional artifacts to be scanned (Java compile output is added by default)
 * configuring .jqassistant config file location
@@ -61,6 +62,7 @@ You can go with the defaults or configure the plugin, e.g. this way:
     project.ext["kejqapluginversion"] = "1.7.0"
     jqassistant {
         toolVersion = "${project.jqaversion}"
+        neo4jVersion 5
         configFile "jqassistant/.jqassistant.yml"
         //Deprecated but still work
         plugins "com.buschmais.jqassistant.plugin:junit:${project.jqaversion}"
@@ -75,18 +77,40 @@ Note that if you have multiple options, config files or scanDirs, just add multi
         scanDirs ".git"
         scanDirs "doc/arc42"
 
+If there is no specific neo4J version declared, the plugin choses the latest version compatible with the current java version (see compatibility matrix below).
+
+If a version is specified it is chosen, unless it is incompatible. In that case the plugin also falls back to the latest compatible version.
+
+Note that when changing the neo4J version, the store folder in the jqassistant folder in the project root must be deleted.
+
 // TODO Carefully test with more current versions
 == Tested Gradle Versions
 
-* 8.8 works (using java 11 and 17)
-* 8.7 works (using java 11 and 17)
-* 7.6 works (using java 11 and 17)
-* 7.3 works (using java 11 and 17)
-* 7.2 works (using java 11)
-* 7.1 works (using java 11)
-* 7.0 works (using java 11)
-* 6.9 works (using java 11)
-* 6.8 and below: does not work (version 1.0.1-SNAPSHOT works down to 4.10)
+Compatibility Matrix:
+The content of the cell are the jQAssistant neo4J-versions, that work given the gradle and java versions
+
+|===
+| |Java 11 |Java 17 |Java 21
+
+|gradle 8.5 - 8.8
+|v4
+|v4 & *v5*
+|v5
+
+|gradle 7.3 - 8.4
+|v4
+|v4 & *v5*
+|
+
+|gradle (6.8)/7.0 - 7.2
+|v4
+|
+|
+
+|===
+
+6.8 and below: does not work (version 1.0.1-SNAPSHOT works down to 4.10)
+
 
 == Tested jQAssistant Versions
 

@@ -2,9 +2,7 @@ package de.kontext_e.jqassistant.gradle;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
-import org.gradle.api.artifacts.Configuration;
-import org.gradle.api.artifacts.Dependency;
-import org.gradle.api.artifacts.DependencySet;
+import org.gradle.api.artifacts.*;
 
 import static java.lang.String.format;
 
@@ -37,16 +35,29 @@ public class JqassistantGradlePlugin implements Plugin<Project> {
         final String toolVersion = jqassistantPluginExtension.getToolVersion();
 
         config.defaultDependencies(dependencies -> {
-            addDependencyForCli(project, dependencies, toolVersion);
+            addDependencyForCli(project, dependencies, jqassistantPluginExtension);
             addDependencyForJava(project, dependencies, toolVersion);
             addAdditionalPlugins(project, dependencies, jqassistantPluginExtension);
         });
+
+        manageLoggerImplementations(config);
     }
 
-    private void addDependencyForCli(Project project, DependencySet dependencies, String toolVersion) {
-        // TODO How to make this dependant on JVM (v5 for > 17 / v4 otherwise)?
-        String artifact = "com.buschmais.jqassistant.cli:jqassistant-commandline-neo4jv4:";
-        Dependency dependency = project.getDependencies().create(artifact + toolVersion);
+    private void manageLoggerImplementations(Configuration config) {
+        config.resolutionStrategy(resolutionStrategy ->
+            resolutionStrategy.eachDependency(dependencyDetails -> {
+                if (dependencyDetails.getRequested().getName().equals("slf4j-simple")){
+                    dependencyDetails.useVersion("2.0.9");
+                }
+            })
+        );
+    }
+
+    private void addDependencyForCli(Project project, DependencySet dependencies, JqassistantPluginExtension extension) {
+        int neo4jVersion = extension.getNeo4jVersion();
+        System.out.println("Using Neo4J Version: " + neo4jVersion);
+        String artifact = "com.buschmais.jqassistant.cli:jqassistant-commandline-neo4jv" + neo4jVersion +":";
+        Dependency dependency = project.getDependencies().create(artifact + extension.getToolVersion());
         dependencies.add(dependency);
     }
 

@@ -1,6 +1,7 @@
 package de.kontext_e.jqassistant.gradle;
 
 import groovy.lang.GString;
+import org.gradle.api.JavaVersion;
 import org.gradle.api.tasks.options.Option;
 
 import java.util.*;
@@ -12,6 +13,7 @@ import java.util.*;
 public class JqassistantPluginExtension {
 
     private String toolVersion = "2.1.0";
+    private int neo4jVersion = 0;
     private List<String> options = new ArrayList<>();
     private final List<String> plugins = new ArrayList<>();
     private final List<String> scanDirs = new ArrayList<>();
@@ -21,6 +23,38 @@ public class JqassistantPluginExtension {
 
     public String getToolVersion() {
         return toolVersion;
+    }
+
+    public int getNeo4jVersion(){
+        //If not specified, use the latest compatible with current java version
+        if (neo4jVersion == 0) {
+            System.out.println("No Neo4J Version specified. Selecting the latest compatible with current Java version...");
+            return getJavaVersion() >= 17 ? 5 : 4;
+        }
+
+        if (neo4jVersion != 4 && neo4jVersion != 5){
+            System.out.println("No valid Neo4J Version was given. Available are: 4, 5");
+            System.out.println("Falling back to latest compatible version");
+            return getJavaVersion() >= 17 ? 5 : 4;
+        }
+
+        if (neo4jVersion == 5 &&  getJavaVersion() < 17){
+            System.out.println("Selected Neo4J Version (5) is incompatible with Java < 17");
+            System.out.println("Falling back to neo4J Version 4...");
+            return 4;
+        }
+
+        if (neo4jVersion == 4 && getJavaVersion() > 17){
+            System.out.println("Selected Neo4J Version (4) is incompatible with Java > 17");
+            System.out.println("Falling back to neo4J Version 5...");
+            return 5;
+        }
+
+        return neo4jVersion;
+    }
+
+    private static int getJavaVersion() {
+        return Integer.parseInt(JavaVersion.current().getMajorVersion());
     }
 
     public Collection<String> getPlugins() {
@@ -44,6 +78,10 @@ public class JqassistantPluginExtension {
 
     public void setToolVersion(String toolVersion) {
         this.toolVersion = toolVersion;
+    }
+
+    public void setNeo4jVersion(Integer neo4jVersion){
+        this.neo4jVersion = neo4jVersion;
     }
 
     public void setConfigFile(String configFileLocation){
@@ -89,6 +127,10 @@ public class JqassistantPluginExtension {
 
     public void configFile(Object... args){
         fillInto(args, configFiles);
+    }
+
+    public void neo4jVersion(int neo4jVersion){
+        this.neo4jVersion = neo4jVersion;
     }
 
     /**
