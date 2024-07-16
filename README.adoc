@@ -13,7 +13,7 @@ This is the first snapshot of a Gradle plugin for jQAssistant. Currently support
 
 == Requirements
 
-* Java 11 or above (see gradle compatibility below)
+* Java 11 or 17 (see gradle compatibility below)
 * Gradle 6.9 - 8.8 (see gradle compatibility below)
 
 To increase compatibility with older java version, this plugin uses jQAssistants neo4Jv4 variant of jQA 2
@@ -110,6 +110,7 @@ The content of the cell are the jQAssistant neo4J-versions, that work given the 
 |===
 
 6.8 and below: does not work (version 1.0.1-SNAPSHOT works down to 4.10)
+
 
 == Tested jQAssistant Versions
 
