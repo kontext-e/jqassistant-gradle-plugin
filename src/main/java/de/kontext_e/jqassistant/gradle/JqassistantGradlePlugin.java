@@ -72,20 +72,11 @@ public class JqassistantGradlePlugin implements Plugin<Project> {
 
         for (String plugin : jqassistantPluginExtension.getPlugins()) {
             dependencies.add(project.getDependencies().create(plugin));
+        for (Tasks task : Tasks.values()) {
+            registerTask(project, jqassistantPluginExtension, task.toString());
         }
     }
 
-    private void registerTasks(Project project, Configuration config, JqassistantPluginExtension jqassistantPluginExtension) {
-        registerTask(project, config, jqassistantPluginExtension, "analyze");
-        registerTask(project, config, jqassistantPluginExtension, "server");
-        registerTask(project, config, jqassistantPluginExtension, "report");
-        registerTask(project, config, jqassistantPluginExtension, "available-scopes");
-        registerTask(project, config, jqassistantPluginExtension, "available-rules");
-        registerTask(project, config, jqassistantPluginExtension, "effective-rules");
-        registerTask(project, config, jqassistantPluginExtension, "effective-configuration");
-        registerTask(project, config, jqassistantPluginExtension, "reset");
-        registerTask(project, config, jqassistantPluginExtension, "list-plugins");
-        registerTask(project, config, jqassistantPluginExtension, "scan").projectToScan(project);
 
         // this is for dynamically defined task of this type in build.gradle
         project.getTasks().withType(Jqassistant.class).configureEach(jqassistant -> jqassistant.setClasspath(config));
