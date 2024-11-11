@@ -1,5 +1,5 @@
 plugins {
-    id('de.kontext_e.jqassistant.gradle') version "2.1.0"
+    id('de.kontext_e.jqassistant.gradle') version "3.0.0"
     id('java')
 }
 
@@ -20,7 +20,7 @@ jqassistant {
     // Available are only 4 or 5
     // Prioritises compatibility over user choice
     // If omitted, chosen default depends on current java version
-    neo4jVersion 4
+    neo4jVersion 5
 
     // Allows for custom location of config file (default is shown below) (multiple possible)
     configFile "jqassistant/.jqassistant.yml"
@@ -29,7 +29,7 @@ jqassistant {
     /* Deprecated Features below, use config file instead */
 
     // Declare plugins (multiple possible)
-    plugin "de.kontext-e.jqassistant.plugin:jqassistant.plugin.git:$kejqapluginversion"
+    //plugin "de.kontext-e.jqassistant.plugin:jqassistant.plugin.git:$kejqapluginversion"
 
     // Declare files/directories to be scanned, java sources are added automatically (multiple possible)
     // (disabled when config file is used; automatic adding of sources does not work either)
@@ -37,4 +37,6 @@ jqassistant {
 
     // Set additional args (multiple possible)
     options "-C jqassistant/.jqassistant.yml"
+
+    installLocation './jqassistant'
 }

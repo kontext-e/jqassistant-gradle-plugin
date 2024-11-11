@@ -14,8 +14,9 @@ repositories {
 dependencies {
     implementation gradleApi()
     implementation localGroovy()
+    implementation 'net.lingala.zip4j:zip4j:2.11.5'
 
-    compileOnly "com.buschmais.jqassistant.cli:jqassistant-commandline-neo4jv5:2.1.0"
+//    compileOnly "com.buschmais.jqassistant.cli:jqassistant-commandline-neo4jv5:2.5.0"
 
     testImplementation gradleTestKit()
     testImplementation('org.junit.jupiter:junit-jupiter:5.5.2')
