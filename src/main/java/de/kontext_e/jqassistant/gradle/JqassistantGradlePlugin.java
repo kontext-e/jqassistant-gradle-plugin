@@ -17,12 +17,23 @@ public class JqassistantGradlePlugin implements Plugin<Project> {
     }
 
     private void registerTasks(Project project, JqassistantPluginExtension jqassistantPluginExtension) {
+        registerJQAInstallTask(project, jqassistantPluginExtension);
         for (Tasks task : Tasks.values()) {
             registerTask(project, jqassistantPluginExtension, task.toString());
         }
     }
 
+    private void registerJQAInstallTask(Project project, JqassistantPluginExtension jqassistantPluginExtension) {
+        project.getTasks().create("installJQA", JqassistantInstall.class, jqassistant -> {
+            jqassistant.setStandardInput(System.in);
+            jqassistant.setStandardOutput(System.out);
+            jqassistant.setErrorOutput(System.err);
 
+            //Set Gradle Information
+            jqassistant.setExtension(jqassistantPluginExtension);
+            jqassistant.setGroup("jQAssistant");
+            jqassistant.setDescription("Install JQA into configured directory");
+        });
     }
 
     private void registerTask(Project project, JqassistantPluginExtension jqassistantPluginExtension, String name) {

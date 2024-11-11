@@ -8,11 +8,12 @@ import java.util.*;
 
 /**
  * Enables configuration of Plugin through new, custom gradle 'jqassistant'-block
- * Setters expose fields to gradle
+ * Setters expose fields to Gradle
  */
 public class JqassistantPluginExtension {
 
     private String toolVersion = "2.1.0";
+    private String installLocation = "./jqassistant";
     private int neo4jVersion = 0;
     private List<String> options = new ArrayList<>();
     private final List<String> plugins = new ArrayList<>();
@@ -186,5 +187,18 @@ public class JqassistantPluginExtension {
                 System.out.println("Unknown type: "+arg.getClass().getName());
             }
         }
+    }
+
+    public String getInstallLocation() {
+        return installLocation;
+    }
+
+    public void setInstallLocation(String installLocation) {
+        this.installLocation = installLocation;
+    }
+
+    //TODO check if this is necessary
+    public void setInstallLocation(GString installLocation) {
+        this.installLocation = installLocation.toString();
     }
 }
