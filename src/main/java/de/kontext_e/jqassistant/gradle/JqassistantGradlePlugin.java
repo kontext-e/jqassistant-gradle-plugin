@@ -8,12 +8,8 @@ import static java.lang.String.format;
 
 public class JqassistantGradlePlugin implements Plugin<Project> {
     public void apply(@NotNull Project project) {
-        JqassistantPluginExtension jqassistantPluginExtension = getPluginExtension(project);
-        registerTasks(project, jqassistantPluginExtension);
-    }
-
-    private JqassistantPluginExtension getPluginExtension(Project project) {
-        return project.getExtensions().create("jqassistant", JqassistantPluginExtension.class);
+        JqassistantPluginExtension extension = project.getExtensions().create("jqassistant", JqassistantPluginExtension.class);
+        registerTasks(project, extension);
     }
 
     private void registerTasks(Project project, JqassistantPluginExtension jqassistantPluginExtension) {
@@ -49,7 +45,6 @@ public class JqassistantGradlePlugin implements Plugin<Project> {
             jqassistant.setGroup("jQAssistant");
             jqassistant.setDescription(format("Executes jQAssistant task '%s'.", name));
 
-            //TODO
             jqassistant.addTaskName(name);
         });
     }
