@@ -15,10 +15,10 @@ public class JqassistantPluginExtension {
     private String toolVersion = "2.1.0";
     private String installLocation = "./jqassistant";
     private int neo4jVersion = 0;
-    private List<String> options = new ArrayList<>();
-    private final List<String> plugins = new ArrayList<>();
+    private final List<String> options = new ArrayList<>();
     private final List<String> scanDirs = new ArrayList<>();
     private final List<String> configFiles = new ArrayList<>();
+    private final List<String> scanUrls = new ArrayList<>();
 
     /* Getters */
 
@@ -26,8 +26,33 @@ public class JqassistantPluginExtension {
         return toolVersion;
     }
 
+    public String getInstallLocation() {
+        return installLocation;
+    }
+
+    private static int getJavaVersion() {
+        return Integer.parseInt(JavaVersion.current().getMajorVersion());
+    }
+
+    public List<String> getOptions() {
+        return Collections.unmodifiableList(options);
+    }
+
+    public List<String> getScanDirs() {
+        return Collections.unmodifiableList(scanDirs);
+    }
+
+    public List<String> getScanUrls() {
+        return Collections.unmodifiableList(scanUrls);
+    }
+
+    public List<String> getConfigFiles(){
+        configFiles.add(installLocation + "/.jqassistant.yml");
+        return Collections.unmodifiableList(configFiles);
+    }
+
     public int getNeo4jVersion(){
-        //If not specified, use the latest compatible with current java version
+        //If not specified, use the latest compatible with the current java version
         if (neo4jVersion == 0) {
             System.out.println("No Neo4J Version specified. Selecting the latest compatible with current Java version...");
             return getJavaVersion() >= 17 ? 5 : 4;
@@ -54,151 +79,84 @@ public class JqassistantPluginExtension {
         return neo4jVersion;
     }
 
-    private static int getJavaVersion() {
-        return Integer.parseInt(JavaVersion.current().getMajorVersion());
-    }
-
-    public Collection<String> getPlugins() {
-        return Collections.unmodifiableList(plugins);
-    }
-
-    public List<String> getOptions() {
-        return Collections.unmodifiableList(options);
-    }
-
-    public List<String> getScanDirs() {
-        return Collections.unmodifiableList(scanDirs);
-    }
-
-    public List<String> getConfigFiles(){
-        return Collections.unmodifiableList(configFiles);
-    }
-
     /* Setters */
 
-
+    /**
+     * Set the desired jQAssistant version for installation.
+     * Works for 2.1.0+
+     *
+     * @param toolVersion the desired jQAssistant version.
+     */
     public void setToolVersion(String toolVersion) {
         this.toolVersion = toolVersion;
     }
 
+    /**
+     * Sets the desired neo4j version, available are: 4 or 5.
+     * Favors compatibility with the java version over user choice.
+     *
+     * @param neo4jVersion the desired neo4j version of jQAssistant
+     */
     public void setNeo4jVersion(Integer neo4jVersion){
         this.neo4jVersion = neo4jVersion;
     }
 
-    public void setConfigFile(String configFileLocation){
-        this.configFiles.add(configFileLocation);
-    }
-
     /**
-     * Adds plugins to jQAssistant
-     * @deprecated Use Config File instead.
-     * Specify location of Config File by using "config" property.
-     * Default location is jqassistant/.jqassistant.yml
-     * @see <a href="https://jqassistant.github.io/jqassistant/doc/2.1.0/#_yaml_files">jQA User Manual</a>
+     * Sets the installation location of jQAssistant for this project.
+     * If jQA is not already installed there, it can be done so using the gradle installJQA task.
+     * If there is already jQAssistant installed at the given location, the installJQA task can be skipped and the existing installation will be used.
      *
-     * @param plugin The plugin to be added to jQA using the gradle dependency syntax
+     * @param installLocation the location where jQAssistant is/will be installed.
      */
-    @Deprecated
-    public void setPlugin(String plugin){
-        fillInto(new String[] {plugin}, plugins);
-    }
-
-    @Deprecated
-    @Option(option = "args", description = "Command line arguments passed to the main class.")
-    public JqassistantPluginExtension setArgsString(String args) {
-        return setOptions(Arrays.asList(args.split(" ")));
-    }
-
-    /**
-     * Sets misc Commandline options for jQAssistant
-     * @deprecated Use Config File instead.
-     * Specify location of Config File by using "config" property.
-     * Default location is jqassistant/.jqassistant.yml
-     * @see <a href="https://jqassistant.github.io/jqassistant/doc/2.1.0/#_yaml_files">jQA User Manual</a>
-     *
-     * @param applicationArgs The Arguments for JQAssistant
-     */
-    @Deprecated
-    public JqassistantPluginExtension setOptions(List<String> applicationArgs) {
-        this.options = applicationArgs;
-        return this;
-    }
-
-    /* Gradle DSL Setters */
-
-    public void configFile(Object... args){
-        fillInto(args, configFiles);
-    }
-
-    public void neo4jVersion(int neo4jVersion){
-        this.neo4jVersion = neo4jVersion;
-    }
-
-    /**
-     * Adds plugins to jQAssistant
-     * @deprecated Use Config File instead.
-     * Specify location of Config File by using "config" property.
-     * Default location is jqassistant/.jqassistant.yml
-     * @see <a href="https://jqassistant.github.io/jqassistant/doc/2.1.0/#_yaml_files">jQA User Manual</a>
-     *
-     * @param args The plugin(s) to be added to jQA using the gradle dependency syntax
-     */
-    @Deprecated
-    public void plugin(Object... args) {
-        fillInto(args, plugins);
-    }
-
-    /**
-     * Declares what directories jQAssistant should scan. Java sources are automatically added and don't need to be declared explicitly.
-     * @deprecated Use Config File instead.
-     * Specify location of Config File by using "config" property.
-     * Default location is jqassistant/.jqassistant.yml
-     * <b>If config file is set, this option won't work, and java sources are not added automatically!</b>
-     * @see <a href="https://jqassistant.github.io/jqassistant/doc/2.1.0/#_yaml_files">jQA User Manual</a>
-     *
-     * @param args the (list of) directories to be scanned
-     */
-    @Deprecated
-    public void scanDir(Object... args) {
-        fillInto(args, scanDirs);
-    }
-
-    /**
-     * Sets misc Commandline options for jQAssistant
-     * @deprecated Use Config File instead.
-     * Specify location of Config File by using "config" property.
-     * Default location is jqassistant/.jqassistant.yml
-     * @see <a href="https://jqassistant.github.io/jqassistant/doc/2.1.0/#_yaml_files">jQA User Manual</a>
-     *
-     * @param args The Arguments for JQAssistant
-     */
-    @Deprecated
-    public void options(Object... args) {
-        fillInto(args, options);
-    }
-
-    private void fillInto(Object[] args, List<String> target) {
-        for (Object arg : args) {
-            if(arg instanceof String) {
-                target.add((String) arg);
-            } else if(arg instanceof GString) {
-                target.add(arg.toString());
-            } else {
-                System.out.println("Unknown type: "+arg.getClass().getName());
-            }
-        }
-    }
-
-    public String getInstallLocation() {
-        return installLocation;
-    }
-
     public void setInstallLocation(String installLocation) {
         this.installLocation = installLocation;
     }
 
-    //TODO check if this is necessary
-    public void setInstallLocation(GString installLocation) {
-        this.installLocation = installLocation.toString();
+    /**
+     * Adds a Config File to be read by jQAssistant.
+     * Default location is installationDirectory + /.jqassistant.yml
+     * @see <a href="https://jqassistant.github.io/jqassistant/doc/2.1.0/#_yaml_files">jQA User Manual</a>
+     *
+     * @param configFileLocation the location of the config file.
+     */
+    public void setConfigFile(String... configFileLocation){
+        this.configFiles.addAll(List.of(configFileLocation));
+    }
+
+    /**
+     * Sets misc Commandline options for jQAssistant
+     * @deprecated Use Config File instead.
+     * @see <a href="https://jqassistant.github.io/jqassistant/doc/2.1.0/#_yaml_files">jQA User Manual</a>
+     *
+     * @param option The Arguments for JQAssistant
+     */
+    public void setOption(String... option){
+        this.options.addAll(List.of(option));
+    }
+
+    /**
+     * Declares what directories jQAssistant should scan.
+     * @deprecated Use Config File instead.
+     * <b>If config file is set, this option won't work, and java sources are not added automatically!</b>
+     * @see <a href="https://jqassistant.github.io/jqassistant/doc/2.1.0/#_yaml_files">jQA User Manual</a>
+     *
+     * @param dir the (list of) directories to be scanned
+     */
+    @Deprecated
+    public void setScanDir(String... dir) {
+        scanDirs.addAll(List.of(dir));
+    }
+
+    /**
+     * Declares what urls jQAssistant should scan.
+     * @deprecated Use Config File instead.
+     * <b>If config file is set, this option won't work, and java sources are not added automatically!</b>
+     * @see <a href="https://jqassistant.github.io/jqassistant/doc/2.1.0/#_yaml_files">jQA User Manual</a>
+     *
+     * @param url the (list of) directories to be scanned
+     */
+    @Deprecated
+    public void setScanUrl(String... url) {
+        scanUrls.addAll(List.of(url));
     }
 }
