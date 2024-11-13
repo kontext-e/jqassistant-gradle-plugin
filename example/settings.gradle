@@ -1,2 +1,8 @@
-rootProject.name = 'jqassistant-gradle-plugin-testproject'
-includeBuild('..')
+pluginManagement {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+}
+
+rootProject.name = 'example'

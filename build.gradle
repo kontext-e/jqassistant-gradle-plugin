@@ -2,10 +2,11 @@ plugins {
     id 'java-gradle-plugin'
     id 'com.gradle.plugin-publish' version '0.15.0'
     id 'java'
+    id 'maven-publish'
 }
 
 group 'de.kontext_e.jqassistant.gradle'
-version '2.1.0'
+version '3.0.0'
 
 repositories {
     mavenCentral()
@@ -36,6 +37,12 @@ pluginBundle {
     website = 'https://github.com/kontext-e/jqassistant-gradle-plugin'
     vcsUrl = 'https://github.com/kontext-e/jqassistant-gradle-plugin'
     tags = ['jqassistant','code quality','architecture']
+}
+
+publishing{
+    repositories {
+        mavenLocal()
+    }
 }
 
 gradlePlugin {
