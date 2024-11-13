@@ -21,7 +21,7 @@ class JqassistantPluginExtensionTest {
     void thatOnlyStringOptionsWereSet() {
         JqassistantPluginExtension extension = new JqassistantPluginExtension();
 
-        extension.options(1, "option", true);
+        extension.setOption("option");
 
         assertEquals(1, extension.getOptions().size());
         assertEquals("option", extension.getOptions().get(0));

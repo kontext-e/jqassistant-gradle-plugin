@@ -4,8 +4,7 @@ plugins {
 }
 
 ext {
-    jqaversion = "2.2.0"
-    kejqapluginversion = "2.1.0"
+    jqaversion = "2.5.0"
 }
 
 repositories {
@@ -14,7 +13,7 @@ repositories {
 
 jqassistant {
     // Allows for different jqa version
-    toolVersion "2.1.0"
+    toolVersion project.jqaversion
 
     // Allows for manual selection of neo4j version.
     // Available are only 4 or 5
@@ -23,20 +22,17 @@ jqassistant {
     neo4jVersion 5
 
     // Allows for custom location of config file (default is shown below) (multiple possible)
-    configFile "jqassistant/.jqassistant.yml"
+    //configFile "./jqassistant/.jqassistant.yml"
 
+    // Customize install location (default is shown below)
+    installLocation '/jqassistant'
 
     /* Deprecated Features below, use config file instead */
 
-    // Declare plugins (multiple possible)
-    //plugin "de.kontext-e.jqassistant.plugin:jqassistant.plugin.git:$kejqapluginversion"
-
     // Declare files/directories to be scanned, java sources are added automatically (multiple possible)
-    // (disabled when config file is used; automatic adding of sources does not work either)
+    // (disabled when config file is used)
     scanDir "../.git"
 
     // Set additional args (multiple possible)
-    options "-C jqassistant/.jqassistant.yml"
-
-    installLocation './jqassistant'
+    option "-Djqassistant.scan.reset=true"
 }
