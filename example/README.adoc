@@ -2,7 +2,8 @@
 
 Use this project for prototyping new functionality for the jQAssistant plugin.
 
-This project automatically reflects *every change* done in `src`.
+Unfortunately, this project no longer reflects every change done in the parent directory.
+Instead, to observer the changes made, you need to execute the `gradle publishToMavenLocal`-Task in the parent project.
 
 == Usage
 
@@ -10,7 +11,7 @@ The following commands analyze the plugin itself:
 
 ----
 $ cd example
-$ ../gradlew scan analyze server
+$ gradlew scan analyze server
 ----
 
 You should be able to go to http://localhost:7474/ and observe that jQAssistant
