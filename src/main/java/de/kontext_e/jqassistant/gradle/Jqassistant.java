@@ -20,11 +20,20 @@ public class Jqassistant extends Exec {
     @Override
     @TaskAction
     public void exec() {
+        addDefaultScanDirectoriesToExtension(getProject());
+
+        String installLocation;
+        if (new File(extension.getInstallLocation()).isAbsolute()){
+            installLocation = extension.getInstallLocation();
+        } else {
+            installLocation = getProject().getProjectDir() + extension.getInstallLocation();
+        }
+
         StringJoiner command = new StringJoiner(" ");
         if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-            command.add(getProject().getProjectDir() + extension.getInstallLocation() + "/bin/jqassistant.cmd");
+            command.add(installLocation + "/bin/jqassistant.cmd");
         } else {
-            command.add(getProject().getProjectDir() + extension.getInstallLocation() +"./bin/jqassistant.sh");
+            command.add(installLocation +"./bin/jqassistant.sh");
         }
 
         command.add(taskName);
