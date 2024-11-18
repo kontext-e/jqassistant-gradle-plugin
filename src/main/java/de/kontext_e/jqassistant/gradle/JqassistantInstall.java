@@ -1,8 +1,6 @@
 package de.kontext_e.jqassistant.gradle;
 
 import net.lingala.zip4j.ZipFile;
-import net.lingala.zip4j.model.UnzipParameters;
-import net.lingala.zip4j.model.ZipParameters;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
 import org.gradle.api.tasks.Exec;
@@ -38,12 +36,12 @@ public class JqassistantInstall extends Exec {
             return;
         }
 
-        Path zipFile = downloadJQA(installationDirectory);
-        extractJQA(zipFile, installationDirectory);
+        int neo4jVersion = extension.getNeo4jVersion();
+        Path zipFile = downloadJQA(installationDirectory, neo4jVersion);
+        extractJQA(zipFile, installationDirectory, neo4jVersion);
     }
 
-    private @NotNull Path downloadJQA(File installationDirectory) {
-        int neo4jVersion = extension.getNeo4jVersion();
+    private @NotNull Path downloadJQA(File installationDirectory, int neo4jVersion) {
         String toolVersion = extension.getToolVersion();
         String jqaURL = String.format(URL, neo4jVersion, toolVersion, neo4jVersion, toolVersion);
         Path zipFile = Paths.get(installationDirectory.getAbsolutePath(), "jqassistant.zip");
@@ -56,9 +54,9 @@ public class JqassistantInstall extends Exec {
         return zipFile;
     }
 
-    private void extractJQA(Path zipFile, File installationDirectory) {
+    private void extractJQA(Path zipFile, File installationDirectory, int neo4jVersion) {
         try (ZipFile file = new ZipFile(zipFile.toFile())){
-            String zipParentDirectory = String.format("jqassistant-commandline-neo4jv%s-%s/", extension.getNeo4jVersion(), extension.getToolVersion());
+            String zipParentDirectory = String.format("jqassistant-commandline-neo4jv%s-%s/", neo4jVersion, extension.getToolVersion());
             file.extractFile(zipParentDirectory + "bin/", installationDirectory.getPath(), "/bin");
             file.extractFile(zipParentDirectory + "lib/", installationDirectory.getPath(), "/lib");
         } catch (IOException e) {
