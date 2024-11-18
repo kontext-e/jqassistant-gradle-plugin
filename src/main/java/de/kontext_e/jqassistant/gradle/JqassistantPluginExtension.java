@@ -1,10 +1,10 @@
 package de.kontext_e.jqassistant.gradle;
 
-import groovy.lang.GString;
 import org.gradle.api.JavaVersion;
-import org.gradle.api.tasks.options.Option;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Enables configuration of Plugin through new, custom gradle 'jqassistant'-block
@@ -47,7 +47,6 @@ public class JqassistantPluginExtension {
     }
 
     public List<String> getConfigFiles(){
-        configFiles.add(installLocation + "/.jqassistant.yml");
         return Collections.unmodifiableList(configFiles);
     }
 
