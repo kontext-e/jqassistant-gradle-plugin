@@ -13,6 +13,7 @@ repositories {
 
 jqassistant {
     // Allows for different jqa version
+    // only evaluated during installation Task
     toolVersion project.jqaversion
 
     // Allows for manual selection of neo4j version.
@@ -30,11 +31,13 @@ jqassistant {
     // absolute paths are accepted as well
     installLocation '/jqassistant'
 
-    /* Deprecated Features below, use config file instead */
+    /* DEPRECATED FEATURES BELOW, USE CONFIG FILE INSTEAD */
 
     // Declare files/directories to be scanned, java sources are added automatically (multiple possible)
-    // (disabled when config file is used)
-    scanDir "../.git"
+    // absolute paths possible; relative paths are relative to jqa install directory
+    // (will be ignored if scan directories are declared in config file;
+    // automatic adding of java sources will be ignored as well)
+    scanDir "../../.git"
 
     // Set additional args (multiple possible)
     option "-Djqassistant.scan.reset=true"
