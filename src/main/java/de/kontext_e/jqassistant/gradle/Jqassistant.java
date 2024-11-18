@@ -53,7 +53,7 @@ public class Jqassistant extends Exec {
             extension.getScanUrls().forEach(command::add);
         }
 
-        workingDir(extension.getInstallLocation());
+        workingDir(installLocation);
         commandLine((Object[]) command.toString().split(" "));
         super.exec();
     }
@@ -67,4 +67,25 @@ public class Jqassistant extends Exec {
         this.extension = extension;
     }
 
+    private void addDefaultScanDirectoriesToExtension(Project project) {
+        addProjectSourcesToScanDirectories(project);
+        for (Project subproject : project.getSubprojects()) {
+            addProjectSourcesToScanDirectories(subproject);
+        }
+    }
+
+    //necessary for compatibility with Gradle 6.9-8.8; for Gradle 7.2-9.0+ convention-->Extension
+    @SuppressWarnings("deprecation")
+    private void addProjectSourcesToScanDirectories(Project rootProject) {
+
+        final JavaPluginConvention javaPluginConvention = rootProject.getConvention().getPlugin(JavaPluginConvention.class);
+        if (javaPluginConvention.getSourceSets().isEmpty()) return;
+
+        for (SourceSet sourceSet : javaPluginConvention.getSourceSets()) {
+            FileCollection presentClassDirectories = sourceSet.getOutput().getClassesDirs().filter(File::exists);
+            for (File asPath : presentClassDirectories.getFiles()) {
+                extension.setScanDir("java:classpath::" + asPath.getAbsolutePath());
+            }
+        }
+    }
 }
