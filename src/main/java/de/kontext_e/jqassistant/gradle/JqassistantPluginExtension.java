@@ -54,13 +54,16 @@ public class JqassistantPluginExtension {
         //If not specified, use the latest compatible with the current java version
         if (neo4jVersion == 0) {
             System.out.println("No Neo4J Version specified. Selecting the latest compatible with current Java version...");
-            return getJavaVersion() >= 17 ? 5 : 4;
+            int neo4jVersion = getJavaVersion() >= 17 ? 5 : 4;
+            System.out.println("Neo4j Version " + neo4jVersion + " selected");
+            return neo4jVersion;
         }
 
         if (neo4jVersion != 4 && neo4jVersion != 5){
             System.out.println("No valid Neo4J Version was given. Available are: 4, 5");
-            System.out.println("Falling back to latest compatible version");
-            return getJavaVersion() >= 17 ? 5 : 4;
+            int neo4jVersion = getJavaVersion() >= 17 ? 5 : 4;
+            System.out.println("Falling back to latest compatible version: " + neo4jVersion);
+            return neo4jVersion;
         }
 
         if (neo4jVersion == 5 &&  getJavaVersion() < 17){
