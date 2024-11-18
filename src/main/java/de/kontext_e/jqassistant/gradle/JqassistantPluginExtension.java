@@ -1,6 +1,8 @@
 package de.kontext_e.jqassistant.gradle;
 
 import org.gradle.api.JavaVersion;
+import org.gradle.api.logging.Logger;
+import org.gradle.api.logging.Logging;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,6 +13,8 @@ import java.util.List;
  * Setters expose fields to Gradle
  */
 public class JqassistantPluginExtension {
+
+    private static final Logger logger = Logging.getLogger(JqassistantInstall.class);
 
     private String toolVersion = "2.5.0";
     private String installLocation = "./jqassistant";
@@ -53,28 +57,28 @@ public class JqassistantPluginExtension {
     public int getNeo4jVersion(){
         //If not specified, use the latest compatible with the current java version
         if (neo4jVersion == 0) {
-            System.out.println("No Neo4J Version specified. Selecting the latest compatible with current Java version...");
+            logger.warn("No Neo4J Version specified. Selecting the latest compatible with current Java version...");
             int neo4jVersion = getJavaVersion() >= 17 ? 5 : 4;
-            System.out.println("Neo4j Version " + neo4jVersion + " selected");
+            logger.warn("Neo4j Version {} selected", neo4jVersion);
             return neo4jVersion;
         }
 
         if (neo4jVersion != 4 && neo4jVersion != 5){
-            System.out.println("No valid Neo4J Version was given. Available are: 4, 5");
+            logger.warn("No valid Neo4J Version was given. Available are: 4, 5");
             int neo4jVersion = getJavaVersion() >= 17 ? 5 : 4;
-            System.out.println("Falling back to latest compatible version: " + neo4jVersion);
+            logger.warn("Falling back to latest compatible version: {}", neo4jVersion);
             return neo4jVersion;
         }
 
         if (neo4jVersion == 5 &&  getJavaVersion() < 17){
-            System.out.println("Selected Neo4J Version (5) is incompatible with Java < 17");
-            System.out.println("Falling back to neo4J Version 4...");
+            logger.warn("Selected Neo4J Version (5) is incompatible with Java < 17");
+            logger.warn("Falling back to neo4J Version 4...");
             return 4;
         }
 
         if (neo4jVersion == 4 && getJavaVersion() > 17){
-            System.out.println("Selected Neo4J Version (4) is incompatible with Java > 17");
-            System.out.println("Falling back to neo4J Version 5...");
+            logger.warn("Selected Neo4J Version (4) is incompatible with Java > 17");
+            logger.warn("Falling back to neo4J Version 5...");
             return 5;
         }
 
