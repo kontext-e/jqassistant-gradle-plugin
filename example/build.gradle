@@ -14,7 +14,7 @@ repositories {
 jqassistant {
     // Allows for different jqa version
     // only evaluated during installation Task
-    toolVersion project.jqaversion
+    toolVersion = project.jqaversion
 
     // Allows for manual selection of neo4j version.
     // Available are only 4 or 5
