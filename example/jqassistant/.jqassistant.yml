@@ -11,7 +11,7 @@ jqassistant:
       json.file.include: '*.json'
   analyze:
     rule:
-    # directory: Path\To\Rule\Directory
+      directory: './rules'
     groups:
       #Don't worry about the concept application failure,
       #This is purely for demonstration purposes
@@ -24,3 +24,10 @@ jqassistant:
       #Snapshot only necessary when using snapshot dependencies
       snapshot:
         url: https://oss.sonatype.org/content/repositories/snapshots
+  store:
+    embedded:
+      neo4j-plugins:
+        - group-id: org.neo4j.procedure
+          artifact-id: apoc-core
+          classifier: core
+          version: 5.24.1
