@@ -2,7 +2,7 @@ package de.kontext_e.jqassistant.gradle;
 
 import org.gradle.api.Project;
 import org.gradle.api.file.FileCollection;
-import org.gradle.api.plugins.JavaPluginConvention;
+import org.gradle.api.plugins.JavaPluginExtension;
 import org.gradle.api.tasks.Exec;
 import org.gradle.api.tasks.SourceSet;
 import org.gradle.api.tasks.TaskAction;
@@ -74,14 +74,12 @@ public class Jqassistant extends Exec {
         }
     }
 
-    //necessary for compatibility with Gradle 6.9-8.8; for Gradle 7.2-9.0+ convention-->Extension
-    @SuppressWarnings("deprecation")
     private void addProjectSourcesToScanDirectories(Project rootProject) {
 
-        final JavaPluginConvention javaPluginConvention = rootProject.getConvention().getPlugin(JavaPluginConvention.class);
-        if (javaPluginConvention.getSourceSets().isEmpty()) return;
+        final JavaPluginExtension javaPluginExtension = rootProject.getExtensions().getByType(JavaPluginExtension.class);
+        if (javaPluginExtension.getSourceSets().isEmpty()) return;
 
-        for (SourceSet sourceSet : javaPluginConvention.getSourceSets()) {
+        for (SourceSet sourceSet : javaPluginExtension.getSourceSets()) {
             FileCollection presentClassDirectories = sourceSet.getOutput().getClassesDirs().filter(File::exists);
             for (File asPath : presentClassDirectories.getFiles()) {
                 extension.setScanDir("java:classpath::" + asPath.getAbsolutePath());
