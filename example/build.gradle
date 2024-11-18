@@ -22,9 +22,10 @@ jqassistant {
     neo4jVersion 5
 
     // Allows for custom location of config file (default is shown below) (multiple possible)
-    //configFile "./jqassistant/.jqassistant.yml"
+    configFile "../.jqassistant.yml"
 
     // Customize install location (default is shown below)
+    // The given Path must be relative to the root directory of the project corresponding to this build.gradle
     installLocation '/jqassistant'
 
     /* Deprecated Features below, use config file instead */

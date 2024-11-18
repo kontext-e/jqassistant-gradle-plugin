@@ -1,8 +1,13 @@
 package de.kontext_e.jqassistant.gradle;
 
+import org.gradle.api.Project;
+import org.gradle.api.file.FileCollection;
+import org.gradle.api.plugins.JavaPluginConvention;
 import org.gradle.api.tasks.Exec;
+import org.gradle.api.tasks.SourceSet;
 import org.gradle.api.tasks.TaskAction;
 
+import java.io.File;
 import java.util.StringJoiner;
 
 public class Jqassistant extends Exec {
@@ -16,11 +21,10 @@ public class Jqassistant extends Exec {
     @TaskAction
     public void exec() {
         StringJoiner command = new StringJoiner(" ");
-
         if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-            command.add("." + extension.getInstallLocation() + "/bin/jqassistant.cmd");
+            command.add(getProject().getProjectDir() + extension.getInstallLocation() + "/bin/jqassistant.cmd");
         } else {
-            command.add("." + extension.getInstallLocation() + "/bin/jqassistant.sh");
+            command.add(getProject().getProjectDir() + extension.getInstallLocation() +"./bin/jqassistant.sh");
         }
 
         command.add(taskName);
@@ -40,6 +44,7 @@ public class Jqassistant extends Exec {
             extension.getScanUrls().forEach(command::add);
         }
 
+        workingDir(extension.getInstallLocation());
         commandLine((Object[]) command.toString().split(" "));
         super.exec();
     }
