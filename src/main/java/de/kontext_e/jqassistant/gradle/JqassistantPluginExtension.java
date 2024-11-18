@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class JqassistantPluginExtension {
 
-    private String toolVersion = "2.1.0";
+    private String toolVersion = "2.5.0";
     private String installLocation = "./jqassistant";
     private int neo4jVersion = 0;
     private final List<String> options = new ArrayList<>();
@@ -130,6 +130,7 @@ public class JqassistantPluginExtension {
      *
      * @param option The Arguments for JQAssistant
      */
+    @Deprecated
     public void setOption(String... option){
         this.options.addAll(List.of(option));
     }
