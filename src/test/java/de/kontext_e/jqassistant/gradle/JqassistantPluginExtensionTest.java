@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class JqassistantPluginExtensionTest {
 
     @Test
+    @SuppressWarnings("deprecation")
     void thatOnlyStringOptionsWereSet() {
         JqassistantPluginExtension extension = new JqassistantPluginExtension();
 
