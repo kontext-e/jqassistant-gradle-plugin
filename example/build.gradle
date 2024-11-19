@@ -29,7 +29,7 @@ jqassistant {
     // Customize install location (default is shown below)
     // relative paths must be relative to the root directory of the project corresponding to this build.gradle
     // absolute paths are accepted as well
-    installLocation '/jqassistant'
+    installLocation './jqassistant'
 
     /* DEPRECATED FEATURES BELOW, USE CONFIG FILE INSTEAD */
 

@@ -22,18 +22,13 @@ public class Jqassistant extends Exec {
     public void exec() {
         addDefaultScanDirectoriesToExtension(getProject());
 
-        String installLocation;
-        if (new File(extension.getInstallLocation()).isAbsolute()){
-            installLocation = extension.getInstallLocation();
-        } else {
-            installLocation = getProject().getProjectDir() + extension.getInstallLocation();
-        }
+        File file = new File(extension.getInstallLocation());
 
         StringJoiner command = new StringJoiner(" ");
         if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-            command.add(installLocation + "/bin/jqassistant.cmd");
+            command.add(file.getAbsolutePath() + "/bin/jqassistant.cmd");
         } else {
-            command.add(installLocation +"./bin/jqassistant.sh");
+            command.add(file.getAbsolutePath() + "/bin/jqassistant.sh");
         }
 
         command.add(taskName);
@@ -53,7 +48,7 @@ public class Jqassistant extends Exec {
             extension.getScanUrls().forEach(command::add);
         }
 
-        workingDir(installLocation);
+        workingDir(file.getAbsolutePath());
         commandLine((Object[]) command.toString().split(" "));
         super.exec();
     }
