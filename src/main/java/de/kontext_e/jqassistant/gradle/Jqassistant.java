@@ -8,6 +8,7 @@ import org.gradle.api.tasks.SourceSet;
 import org.gradle.api.tasks.TaskAction;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.StringJoiner;
 
 public class Jqassistant extends Exec {
@@ -20,15 +21,19 @@ public class Jqassistant extends Exec {
     @Override
     @TaskAction
     public void exec() {
-        addDefaultScanDirectoriesToExtension(getProject());
+        Project project = getProject();
+        addDefaultScanDirectoriesToExtension(project);
 
-        File file = new File(extension.getInstallLocation());
+        Path projectRoot = new File(project.getProjectDir().getAbsolutePath()).toPath();
+        Path installationPath = new File(extension.getInstallLocation()).toPath();
+
+        Path absoluteInstallationPath = projectRoot.resolve(installationPath);
 
         StringJoiner command = new StringJoiner(" ");
         if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-            command.add(file.getAbsolutePath() + "/bin/jqassistant.cmd");
+            command.add(absoluteInstallationPath + "/bin/jqassistant.cmd");
         } else {
-            command.add(file.getAbsolutePath() + "/bin/jqassistant.sh");
+            command.add(absoluteInstallationPath + "/bin/jqassistant.sh");
         }
 
         command.add(taskName);
@@ -48,7 +53,7 @@ public class Jqassistant extends Exec {
             extension.getScanUrls().forEach(command::add);
         }
 
-        workingDir(file.getAbsolutePath());
+        workingDir(absoluteInstallationPath);
         commandLine((Object[]) command.toString().split(" "));
         super.exec();
     }
