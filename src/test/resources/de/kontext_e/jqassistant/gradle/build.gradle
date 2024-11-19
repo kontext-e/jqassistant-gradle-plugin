@@ -15,8 +15,6 @@ repositories {
 jqassistant {
     toolVersion "2.1.0"
 
-    plugin "de.kontext-e.jqassistant.plugin:jqassistant.plugin.git:$kejqapluginversion"
-
     scanDir "."
 
 }
