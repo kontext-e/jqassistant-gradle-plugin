@@ -17,6 +17,7 @@ Currently supported are:
 
 === Version 3.0.0
 
+* *Changed Plugin ID from [.line-through]#de.kontext_e.jqassistant.gradle# to de.kontext-e.jqassistant.gradle* to follow Gradle guidelines
 * use of different Gradle API to remove classpath issues
 * installation of jQAssistant now required (use installJQA task)
 * enabled possibility to use existing jQAssistant installations
@@ -37,7 +38,7 @@ For more information, check out the https://jqassistant.github.io/jqassistant/do
 Add in your Gradle project in question the plugin via
 
     plugins {
-        id "de.kontext_e.jqassistant.gradle" version "3.0.0"
+        id "de.kontext-e.jqassistant.gradle" version "3.0.0"
     }
 
 or
@@ -47,13 +48,13 @@ or
             mavenLocal()
         }
         dependencies {
-            classpath 'de.kontext_e.jqassistant.gradle:jqassistant-gradle-plugin:3.0.0'
+            classpath 'de.kontext-e.jqassistant.gradle:jqassistant-gradle-plugin:3.0.0'
         }
     }
 
 and apply the plugin
 
-    apply plugin: 'de.kontext_e.jqassistant.gradle'
+    apply plugin: 'de.kontext-e.jqassistant.gradle'
 
 Note that you need an installation of jQA first.
 To install jQAssistant into the project,
@@ -71,6 +72,21 @@ Now you can call
 or
 
     ./gradlew analyze
+
+=== Troubleshooting
+Should you encounter the error `java.lang.IllegalAccessException: module java.base does not open java.nio to unnamed module` add the following line to your jqassistant.cmd (above the last line) (Windows):
+
+[source]
+----
+set JQASSISTANT_OPTS=--add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED
+----
+
+or in the jqassistant.sh (above the last line) (unix):
+
+[source]
+----
+JQASSISTANT_OPTS=--add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED
+----
 
 == Configuration
 

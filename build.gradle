@@ -5,7 +5,7 @@ plugins {
     id 'maven-publish'
 }
 
-group 'de.kontext_e.jqassistant.gradle'
+group 'de.kontext-e.jqassistant.gradle'
 version '3.0.0'
 
 repositories {
@@ -47,7 +47,7 @@ gradlePlugin {
     plugins {
         jqassistantPlugin {
             // publish with ./gradlew publishPlugins
-            id = 'de.kontext_e.jqassistant.gradle'
+            id = 'de.kontext-e.jqassistant.gradle'
             displayName = 'jQAssistant Gradle plugin'
             description = 'Scans project artifacts, enriches with higher level concepts and applies constraints. See https://jqassistant.org/ for details.'
             implementationClass = 'de.kontext_e.jqassistant.gradle.JqassistantGradlePlugin'
