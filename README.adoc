@@ -147,5 +147,5 @@ The contents of the cells are the jQAssistant neo4J-versions that work given the
 
 == Tested jQAssistant Versions
 
-* 2.1.0-2.1.5
+* 2.1.0-2.5.0
 * for jqa 1.X use version 1.0.1-SNAPSHOT version of this Plugin
