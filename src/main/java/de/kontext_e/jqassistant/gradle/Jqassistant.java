@@ -25,13 +25,13 @@ public class Jqassistant extends Exec {
         addDefaultScanDirectoriesToExtension(project);
 
         Path projectRoot = new File(project.getProjectDir().getAbsolutePath()).toPath();
-        Path installationPath = new File(extension.getInstallLocation()).toPath();
-
+        String installLocation = extension.getInstallLocation();
+        Path installationPath = new File(installLocation).toPath();
         Path absoluteInstallationPath = projectRoot.resolve(installationPath);
 
         StringJoiner command = new StringJoiner(" ");
         if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-            command.add(absoluteInstallationPath + "/bin/jqassistant.cmd");
+            command.add(absoluteInstallationPath + "\\bin\\jqassistant.cmd");
         } else {
             command.add(absoluteInstallationPath + "/bin/jqassistant.sh");
         }

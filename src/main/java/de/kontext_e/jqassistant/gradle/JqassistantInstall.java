@@ -1,6 +1,7 @@
 package de.kontext_e.jqassistant.gradle;
 
 import net.lingala.zip4j.ZipFile;
+import org.gradle.api.Project;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
 import org.gradle.api.tasks.Exec;
@@ -26,19 +27,23 @@ public class JqassistantInstall extends Exec {
     @Override
     @TaskAction
     public void exec() {
-        File installationDirectory = new File(getProject().getRootDir() + extension.getInstallLocation());
-        if (!installationDirectory.exists()) {
-            installationDirectory.mkdirs();
+        Project project = getProject();
+        Path projectRoot = new File(project.getProjectDir().getAbsolutePath()).toPath();
+        String installLocation = extension.getInstallLocation();
+        Path installationPath = new File(installLocation).toPath();
+        Path installationDirectory = projectRoot.resolve(installationPath);
+        if (!installationDirectory.toFile().exists()) {
+            installationDirectory.toFile().mkdirs();
         }
 
-        if (new File(getProject().getRootDir() + extension.getInstallLocation() + "/bin").exists()) {
+        if (new File(project.getRootDir() + extension.getInstallLocation() + "/bin").exists()) {
             logger.warn("JQA appears to be already installed. If you want to upgrade to a newer jqassistant version, please delete the installation directory.");
             return;
         }
 
         int neo4jVersion = extension.getNeo4jVersion();
-        Path zipFile = downloadJQA(installationDirectory, neo4jVersion);
-        extractJQA(zipFile, installationDirectory, neo4jVersion);
+        Path zipFile = downloadJQA(installationDirectory.toFile(), neo4jVersion);
+        extractJQA(zipFile, installationDirectory.toFile(), neo4jVersion);
     }
 
     private @NotNull Path downloadJQA(File installationDirectory, int neo4jVersion) {
