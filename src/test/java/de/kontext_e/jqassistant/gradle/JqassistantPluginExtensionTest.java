@@ -32,7 +32,7 @@ class JqassistantPluginExtensionTest {
     @Test
     void applyPluginsRegisterScanTask() {
         Project project = ProjectBuilder.builder().build();
-        project.getPluginManager().apply("de.kontext_e.jqassistant.gradle");
+        project.getPluginManager().apply("de.kontext-e.jqassistant.gradle");
 
         assertTrue(project.getTasks().getByName("scan") instanceof Jqassistant);
     }
