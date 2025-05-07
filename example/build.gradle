@@ -1,5 +1,5 @@
 plugins {
-    id 'de.kontext-e.jqassistant.gradle' version("3.0.0")
+    id 'de.kontext-e.jqassistant.gradle' version("3.0.1")
     id 'java'
 }
 
@@ -27,7 +27,7 @@ jqassistant {
     configFile ".jqassistant.yml"
 
     // Customize install location (default is shown below)
-    // relative paths must be relative to the root directory of the project corresponding to this build.gradle
+    // relative paths must be relative to the directory of the project corresponding to this build.gradle
     // absolute paths are accepted as well
     installLocation './jqassistant'
 

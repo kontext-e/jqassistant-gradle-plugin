@@ -41,7 +41,7 @@ For more information, check out the https://jqassistant.github.io/jqassistant/do
 Add in your Gradle project in question the plugin via
 
     plugins {
-        id "de.kontext-e.jqassistant.gradle" version "3.0.0"
+        id "de.kontext-e.jqassistant.gradle" version "3.0.1"
     }
 
 or
@@ -51,7 +51,7 @@ or
             mavenLocal()
         }
         dependencies {
-            classpath 'de.kontext-e.jqassistant.gradle:jqassistant-gradle-plugin:3.0.0'
+            classpath 'de.kontext-e.jqassistant.gradle:jqassistant-gradle-plugin:3.0.1'
         }
     }
 
@@ -149,5 +149,5 @@ The contents of the cells are the jQAssistant neo4J-versions that work given the
 
 == Tested jQAssistant Versions
 
-* 2.1.0-2.1.5
+* 2.1.0-2.5.0
 * for jqa 1.X use version 1.0.1-SNAPSHOT version of this Plugin
